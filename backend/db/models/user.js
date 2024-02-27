@@ -15,7 +15,17 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'organizerId',
         onDelete: 'CASCADE',
         hooks: true
-      })
+      });
+      User.hasMany(models.Membership, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        hooks: true
+      });
+      User.belongsToMany(models.Event, {
+        through: models.Attendance,
+        foreignKey: 'userId',
+        otherKey: 'eventId'
+      });
     }
   }
   User.init({

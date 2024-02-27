@@ -8,43 +8,38 @@ if (process.env.NODE_ENV === 'production'){
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Groups', {
+    await queryInterface.createTable('Venues', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      organizerId: {
+      groupId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',
+          model: 'Groups',
           key: 'id'
         }
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      about: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
-      type: {
+      address: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      private: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
       },
       city: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       state: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      lat: {
+        type: Sequelize.DECIMAL
+      },
+      lng: {
+        type: Sequelize.DECIMAL
       },
       createdAt: {
         allowNull: false,
@@ -59,7 +54,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Groups'
+    options.tableName = 'Venues'
     await queryInterface.dropTable(options);
   }
 };

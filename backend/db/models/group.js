@@ -11,16 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Group.belongsTo(models.User)
+      Group.belongsTo(models.User);
+      Group.hasMany(models.GroupImage, {
+        foreignKey: 'groupId'
+      })
+      Group.hasMany(models.Venue, {
+        foreignKey: 'groupId'
+      })
+      Group.hasMany(models.Event, {
+        foreignKey: 'groupId'
+      })
+      Group.hasMany(models.Membership, {
+        foreignKey: 'groupId'
+      })
     }
   }
   Group.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     organizerId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -30,16 +36,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: {
-          args: [5,50],
-          msg: 'Name has to include 5 - 50 characters'
+          args: [3,50],
+          msg: 'Name has to include 3 - 50 characters'
         }
       }
     },
     about: {
       type: DataTypes.TEXT,
+      allowNull: false
     },
     type: {
-      type: DataTypes.ENUM(['Social', 'Work', 'Study', 'Entertainment', 'Sports']),
+      type: DataTypes.STRING,
+      allowNull: false
     },
     private: {
       type: DataTypes.BOOLEAN,
@@ -51,7 +59,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false
     }
   }, {
     sequelize,

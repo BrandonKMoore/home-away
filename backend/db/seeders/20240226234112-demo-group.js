@@ -10,15 +10,6 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
     await Group.bulkCreate([
       {
         organizerId: 4,
@@ -35,6 +26,7 @@ module.exports = {
         about: 'We post locations and time where we all get together and hoop',
         type: 'Sports',
         city: 'Houston',
+        private: false,
         state: 'Texas'
       },
       {
@@ -48,13 +40,9 @@ module.exports = {
     ], { validate: true });
   },
 
+  //INSERT INTO groups (organizerId, name, about, type, private, state) VALUES (1, 'Chess Club R Us', 'Chess is life. Fun company we keep.', 'Social', true, 'Florida');
+
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
     options.tableName = 'Groups';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
