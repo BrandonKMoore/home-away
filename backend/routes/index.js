@@ -12,4 +12,12 @@ router.get("/api/csrf/restore", (req, res) => {
   });
 });
 
+router.use((err, req, res, next)=>{
+  const logErr = {}
+
+  if(err.message) logErr.message = err.message;
+  if(err.errors) logErr.errors = err.errors
+  return res.json(logErr)
+})
+
 module.exports = router;
