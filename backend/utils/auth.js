@@ -69,7 +69,7 @@ const requireAuth = function (req, _res, next) {
 
 const authenticationCheck = (currUserId, authUserId) => {
   const currentUser = parseInt(currUserId);
-  const authorizedUser = parseInt(authUserId)
+  const authorizedUser = parseInt(authUserId);
   if(currentUser === authorizedUser) {
     return true
   }

@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isIn: {
-          args: [['active', 'suspended', 'banned']],
-          msg: 'Please provide status of active, suspended, or banned'
+          args: [['member', 'co-host', 'pending']],
+          msg: 'Please provide status of member, co-host, or pending'
         }
       }
     }

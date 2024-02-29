@@ -191,7 +191,6 @@ router.delete('/:groupId', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
-  // await group.destroy()
   await Group.destroy({
     where: {
       id: group.id
@@ -199,6 +198,87 @@ router.delete('/:groupId', requireAuth, async(req, res, next)=>{
   })
 
   return res.json({message: "Successfully deleted"})
+});
+
+// Get All Venues for a Group specified by its id
+router.get('/:groupId/venues', requireAuth, async (req, res, next)=>{
+  const groupId = req.params.groupId
+
+  const group = await Group.findByPk(groupId, {
+    include: [
+      {model: Venue}
+    ],
+    attributes: ['id', 'organizerId'],
+  })
+
+  if(!group) {
+    const err = new Error("Group couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const member = await group.getMemberships({
+    where: {
+      userId: req.user.id
+    }
+  })
+
+  if(!authenticationCheck(req.user.id, group.organizerId) && member[0].status !== 'co-host'){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
+  res.json({
+    Venues: group.Venues
+  })
+})
+
+// Create a new Venue for a Group specified by its id
+router.post('/:groupId/venues', requireAuth, async (req, res, next)=>{
+  const groupId = req.params.groupId
+  const newVenue = {}
+
+  const group = await Group.findByPk(groupId)
+
+  if(!group) {
+    const err = new Error("Group couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const member = await group.getMemberships({
+    where: {
+      userId: req.user.id
+    }
+  })
+
+  if(!authenticationCheck(req.user.id, group.organizerId) && member[0].status !== 'co-host'){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
+  for (let key in req.body){
+    newVenue[key] = req.body[key]
+  }
+
+  try{
+    const venue = await group.createVenue(newVenue)
+    const { address, city, state, lat, lng } = venue
+
+    res.json({
+      id: venue.id,
+      groupId,
+      address,
+      city,
+      state,
+      lat,
+      lng,
+    })
+  } catch (err){
+    return next(err)
+  }
 });
 
 module.exports = router
