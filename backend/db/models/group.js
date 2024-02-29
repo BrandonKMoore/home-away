@@ -45,8 +45,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull: {
+          msg: 'Name must be 60 characters or less'
+        },
         len: {
-          args: [0,60],
+          args: [1,60],
           msg: 'Name must be 60 characters or less'
         }
       }
@@ -55,6 +58,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
+        notNull: {
+          msg: "About must be 50 characters or more"
+        },
         len: {
           args: [50,1000],
           msg: "About must be 50 characters or more"
@@ -65,6 +71,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        notNull: {
+          msg: "Type must be 'Online' or 'In Person'"
+        },
         isIn: {
           args: [['Online', 'In person']],
           msg: "Type must be 'Online' or 'In Person'"
@@ -76,6 +85,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false,
       validate: {
+        notNull: {
+          msg: 'Private must be a boolean'
+        },
         isBoolean(val){
           if(typeof val !== typeof true){
             throw new Error('Private must be a boolean')

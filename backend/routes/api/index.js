@@ -14,8 +14,4 @@ router.use('/groups', groupRouter)
 router.use('/venues', venueRouter)
 router.use('/events', eventRouter)
 
-router.post('/test', (req, res) => {
-  res.json({ requestBody: req.body });
-});
-
 module.exports = router;

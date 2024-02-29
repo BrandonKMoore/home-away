@@ -333,7 +333,6 @@ router.get('/:groupId/events', async(req, res, next)=>{
     event.Group = ele.Group
     event.Venue = ele.Venue
 
-    console.log(ele.EventImages[0].url)
     eventsOfGroup.push(event)
   })
 

@@ -1,4 +1,7 @@
 'use strict';
+
+const date = new Date()
+
 const {
   Model
 } = require('sequelize');
@@ -42,22 +45,87 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Name must be at least 5 characters"
+        },
+        len: {
+          args: [5,50],
+          msg: "Name must be at least 5 characters"
+        }
+      }
     },
-    description: DataTypes.TEXT,
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Description is required"
+        },
+        len: {
+          args: [1,1000],
+          msg: "Description is required"
+        }
+      }
+    },
     type: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Type must be Online or In person"
+        },
+        isIn: {
+          args: [['Online', 'In person']],
+          msg: "Type must be Online or In person"
+        }
+      }
     },
-    capacity: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
+    capacity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Capacity must be an integer"
+        },
+        isInt: {
+          msg: "Capacity must be an integer"
+        }
+      }
+    },
+    price: {
+      type: DataTypes.DECIMAL(5,2),
+      allowNull: false,
+      isDecimal: {
+        msg: "Price is invalid"
+      }
+    },
     startDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Start date must be in the future"
+        },
+        isAfter: {
+          args: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+          msg: "Start date must be in the future"
+        }
+      }
     },
     endDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "End date is less than start date"
+        },
+        isAfter: {
+          args: this.startDate,
+          msg: "End date is less than start date"
+        }
+      }
     }
   }, {
     sequelize,
