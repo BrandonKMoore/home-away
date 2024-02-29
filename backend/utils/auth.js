@@ -67,4 +67,13 @@ const requireAuth = function (req, _res, next) {
   // conditional needed for authorization
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth}
+const authenticationCheck = (currUserId, authUserId) => {
+  const currentUser = parseInt(currUserId);
+  const authorizedUser = parseInt(authUserId)
+  if(currentUser === authorizedUser) {
+    return true
+  }
+  return false
+}
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, authenticationCheck }

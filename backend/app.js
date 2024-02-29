@@ -55,21 +55,22 @@ app.use((err, _req, _res, next)=>{
     for (let error of err.errors) {
       errors[error.path] = error.message;
     }
-    err.title = 'Validation error';
+    err.message = "Validation error"
     err.errors = errors;
+    err.status = 400
   }
   next(err);
 });
 
 app.use((err, _req, res, _next)=>{
   res.status(err.status || 500);
-  console.error(err);
-  res.json({
-    title: err.title || 'Server Error',
-    message: err.message,
-    errors: err.errors,
-    stack: isProduction ? null : err.stack
-  });
+
+  const finalErr = {}
+  if(err.title) finalErr.title = err.title
+  if(err.message) finalErr.message = err.message
+  if(err.errors) finalErr.errors = err.errors
+  if(isProduction) finalErr.stack = err.stack
+  res.json(finalErr);
 });
 
 module.exports = app;
