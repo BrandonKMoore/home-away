@@ -334,9 +334,58 @@ router.get('/:groupId/events', async(req, res, next)=>{
     event.Venue = ele.Venue
 
     eventsOfGroup.push(event)
-  })
+  });
 
   res.json({Events: eventsOfGroup})
-})
+});
+
+// Create an Event for a Group specified by its id
+router.post('/:groupId/events', requireAuth, async(req, res, next)=>{
+  const newEvent = {}
+
+  for (let key in req.body){
+    newEvent[key] = req.body[key]
+  }
+
+  if (!await Venue.findByPk(req.body.venueId)){
+    const err = new Error("Venue couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [{ model: Membership }],
+    attributes: ['id', 'organizerId']
+  })
+
+  if(!group) {
+    const err = new Error("Group couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const member = await group.getMemberships({
+    where: {
+      userId: req.user.id
+    }
+  })
+
+  if(!authenticationCheck(req.user.id, group.organizerId) && member[0].status !== 'co-host'){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
+  try{
+    const createdEvent = await group.createEvent(newEvent)
+    newEvent.id = createdEvent.id
+
+  } catch (err){
+    return next(err)
+  }
+  res.json(newEvent)
+});
+
+
 
 module.exports = router

@@ -121,9 +121,8 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: "End date is less than start date"
         },
-        isAfter: {
-          args: this.startDate,
-          msg: "End date is less than start date"
+        isAfterStartDate(val) {
+          if (val < this.startDate) throw new Error("End date is less than start date")
         }
       }
     }
