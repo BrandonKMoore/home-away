@@ -2,7 +2,7 @@ const express = require('express')
 const {  requireAuth, authenticationCheck } = require('../../utils/auth')
 const { Op } = require('sequelize')
 
-const { Group, GroupImage, Membership, Venue, User } = require('../../db/models')
+const { Group, GroupImage, Membership, Venue, User, Event, Attendance, EventImage } = require('../../db/models')
 
 const router = express.Router()
 
@@ -280,5 +280,64 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next)=>{
     return next(err)
   }
 });
+
+// Get all Events of a Group specified by its id
+router.get('/:groupId/events', async(req, res, next)=>{
+  const group = await Group.findByPk(req.params.groupId, {
+    attributes: ['id']
+  })
+
+  console.log(group)
+
+  if(!group) {
+    const err = new Error("Group couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const events = await Event.findAll({
+    include: [
+      {
+        model: Group,
+        attributes: ['id', 'name', 'city', 'state'],
+        where: {id: req.params.groupId}
+      },
+      {
+        model: User,
+        attributes: ['id'],
+      },
+      {
+        model: EventImage,
+        attributes: ['url']
+      },
+      {
+        model: Venue,
+        attributes: ['id', 'city', 'state']
+      },
+    ],
+    where: {
+      groupId: req.params.groupId
+    },
+    attributes: {
+      exclude: ['description', 'capacity', 'price']
+    }
+  })
+
+  const eventsOfGroup = []
+
+  events.forEach(ele => {
+    const { id, groupId, venueId, name, type, startDate, endDate } = ele
+    const event = { id, groupId, venueId, name, type, startDate, endDate }
+    event.numAttending = ele.Users.length
+    event.previewImage = ele.EventImages[0].url || null
+    event.Group = ele.Group
+    event.Venue = ele.Venue
+
+    console.log(ele.EventImages[0].url)
+    eventsOfGroup.push(event)
+  })
+
+  res.json({Events: eventsOfGroup})
+})
 
 module.exports = router
