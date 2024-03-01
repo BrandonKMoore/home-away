@@ -21,8 +21,9 @@ router.get('/', async (req, res)=>{
     const group = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt}
     group.numMembers = Memberships.length
 
-    group.previewImage = []
-    GroupImages[0].url
+    for(image of GroupImages){
+      if(image.preview === true) group.previewImage = image.url
+    }
 
     for(let key in group){
       if(group[key] === null) delete group[key]
@@ -574,7 +575,7 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async(req, res, nex
     err.status = 404
     return next(err)
   }
-  
+
     // Check: Current User must be the host of the group, or the user whose membership is being deleted
   if(!authenticationCheck(req.user.id, group.organizerId) && !member){
     const err = new Error("Forbidden")

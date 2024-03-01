@@ -9,13 +9,50 @@ const router = express.Router();
 
 // Get all Events
 router.get('/', async(req, res, next)=>{
+  let { page, size, name, type, startDate } = req.query;
+  const queries = { name, type, startDate }
+
+  // console.log(typeof name, typeof '', name === undefined)
+
+  // for(item in req.query){
+  //   if(page < 1) new Error("Page must be greater than or equal to 1")
+  //   if(size < 1) new Error("Size must be greater than or equal to 1")
+  //   // if(typeof name != typeof '' || name === undefined)
+  //   // return next(err)
+  // }
+
+  if(!page) page = 1;
+  if(!size) size = 5;
+
+  const pagination = {
+      limit: size,
+      offset: size * (page - 1)
+  }
+
+  if (queries.name || queries.type || queries.startDate){
+    pagination.where = {}
+    for(query in queries){
+      if(queries[query]) pagination.where[query] = {[Op.substring]: queries[query]}
+    }
+  }
+
+
+  console.log(pagination)
+
+  if(page = 0 || size == 0 || isNaN(size) || isNaN(page)){
+    delete pagination.limit;
+    delete pagination.offset;
+  }
+
+
   const allEvents = await Event.findAll({
     include: [
       {model: Group, attributes: ['id', 'name', 'city', 'state']},
       {model: Venue, attributes: ['id', 'city', 'state']}],
     attributes: {
       exclude: ['description']
-    }
+    },
+    ...pagination,
   })
 
   res.json({Events: allEvents})
