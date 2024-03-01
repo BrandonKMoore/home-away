@@ -1,6 +1,6 @@
 const express = require('express');
 const {  requireAuth, authenticationCheck } = require('../../utils/auth');
-const { Op } = require('sequelize');
+const { Op, json } = require('sequelize');
 
 const { Event, Group, Venue, User, EventImage, Membership, Attendance } = require('../../db/models');
 
@@ -276,6 +276,44 @@ router.get('/:eventId/attendees', async(req, res, next)=>{
   res.json({Attendees: allAttendees.Users})
 })
 
+// Request to Attend an Event based on the Event's id
+router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
+  const eventId = req.params.eventId
+  const { userId, status } = req.body
 
+  const event = await Event.findByPk(eventId)
+
+  if(!event) {
+    const err = new Error("Event couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const attendee = await Attendance.findOne({
+    where: {
+      userId,
+      eventId
+    }
+  })
+
+  if(attendee){
+    const err = new Error("Attendee already in attendance")
+    if(attendee.status === 'pending') err.message = "Attendance has already been requested"
+    if(attendee.status === 'attending') err.message = "User is already an attendee of the event"
+    err.status = 400
+    return next(err)
+  }
+
+  try{
+    const newAttendee = await Attendance.create({
+      userId,
+      eventId,
+      status: 'pending'
+    })
+  } catch(err){
+    next(err)
+  }
+  res.json({ userId, status })
+});
 
 module.exports = router;

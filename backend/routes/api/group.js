@@ -12,7 +12,7 @@ router.get('/', async (req, res)=>{
   const allGroups = await Group.scope().findAll({
      include: [
       {model: Membership, attributes: ['id']},
-      {model: GroupImage, attributes: ['url']}
+      {model: GroupImage, attributes: ['url', 'preview']}
     ]
   })
 
@@ -20,7 +20,9 @@ router.get('/', async (req, res)=>{
     const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Memberships, GroupImages } = ele
     const group = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt}
     group.numMembers = Memberships.length
-    group.previewImage = GroupImages[0].url
+
+    group.previewImage = []
+    GroupImages[0].url
 
     for(let key in group){
       if(group[key] === null) delete group[key]
@@ -398,7 +400,7 @@ router.get('/:groupId/members', async(req, res, next)=>{
       },
     ],
     attributes: ['id', 'firstName', 'lastName'],
-  }); 
+  });
 
   if(!members) {
     const err = new Error("No members in selected group")
@@ -572,7 +574,7 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async(req, res, nex
     err.status = 404
     return next(err)
   }
-console.log(member.userId, req.user.id)
+  
     // Check: Current User must be the host of the group, or the user whose membership is being deleted
   if(!authenticationCheck(req.user.id, group.organizerId) && !member){
     const err = new Error("Forbidden")
