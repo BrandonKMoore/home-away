@@ -3,6 +3,7 @@ const {  requireAuth, authenticationCheck } = require('../../utils/auth');
 const { Op, json } = require('sequelize');
 
 const { Event, Group, Venue, User, EventImage, Membership, Attendance } = require('../../db/models');
+const attendance = require('../../db/models/attendance');
 
 const router = express.Router();
 
@@ -304,6 +305,19 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
+  const member = await Membership.findOne({
+    where: {
+      groupId: event.groupId,
+      userId
+    }
+  })
+
+  if(!member){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
   try{
     const newAttendee = await Attendance.create({
       userId,
@@ -315,5 +329,115 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
   }
   res.json({ userId, status })
 });
+
+// Change the status of an attendance for an event specified by id
+router.put('/:eventId/attendance', requireAuth, async(req, res, next)=>{
+  const eventId = req.params.eventId;
+  const { userId, status } = req.body;
+
+  const event = await Event.findByPk(eventId,{
+    include: [{model: Group, attributes: ['organizerId']}]
+  })
+
+  if(!event) {
+    const err = new Error("Event couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const coHostOfGroup = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      groupId: event.groupId,
+      status: 'co-host'
+    }
+  })
+
+  if(!authenticationCheck(req.user.id, event.Group.organizerId) && !coHostOfGroup){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
+  if(status === 'pending'){
+    const err = new Error("Bad Request")
+    err.errors = { status: "Cannot change an attendance status to pending" }
+    err.status = 400
+    return next(err)
+  }
+
+  //Couldn't find a User with the specified userId
+  const user = await User.findByPk(userId)
+  if(!user){
+    const err = new Error("User couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+
+
+  const attendee = await Attendance.findOne({ where: { userId, eventId }, attributes: {include:  ['id']}})
+
+  if(!attendee) {
+    const err = new Error("Attendance between the user and the event does not exist")
+    err.status = 404
+    return next(err)
+  }
+
+  attendee.status = status
+  await attendee.save()
+
+
+
+  res.json({
+    id: attendee.id,
+    eventId: attendee.eventId,
+    userId: attendee.userId,
+    status: attendee.status,
+  })
+});
+
+// Delete attendance to an event specified by id
+router.delete('/:eventId/attendance/:userId', requireAuth, async(req, res, next)=>{
+  const { eventId, userId } = req.params
+
+  const event = await Event.findByPk(eventId,{
+    include: [{model: Group, attributes: ['organizerId']}]
+  })
+
+  if(!event) {
+    const err = new Error("Event couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  //Couldn't find a User with the specified userId
+  const user = await User.findByPk(userId)
+  if(!user){
+    const err = new Error("User couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  console.log(userId, userId == req.user.id, req.user.id)
+
+  if(!authenticationCheck(req.user.id, event.Group.organizerId) && !(userId == req.user.id)){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
+  const attendant = await Attendance.findOne({ where: { eventId, userId }})
+  if(!attendant){
+    const err = new Error("Attendance does not exist for this User")
+    err.status = 404
+    return next(err)
+  }
+
+
+  await Attendance.destroy({ where: { eventId, userId }})
+
+  res.json({ message: "Successfully deleted attendance from event" })
+})
 
 module.exports = router;
