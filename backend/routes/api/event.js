@@ -229,6 +229,53 @@ const member = await Membership.findOne({
 
   console.log('after', event.id)
   res.json({"message": "Successfully deleted"})
+});
+
+// Get all Attendees of an Event specified by its id
+router.get('/:eventId/attendees', async(req, res, next)=>{
+  const eventId = req.params.eventId;
+  const allAttendees = await Event.findByPk(eventId, {
+    include: [{
+      model: User,
+      attributes: ['id', 'firstName', 'lastName'],
+      through: {
+        attributes: ['status']
+      }
+    },
+    {
+      model: Group,
+      attributes: ['id', 'organizerId']
+    }],
+    attributes: []
+  })
+
+  if(!allAttendees) {
+    const err = new Error("Event couldn't be found")
+    err.status = 404
+    return next(err)
+  }
+
+  const coHostOfGroup = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      groupId: allAttendees.Group.id,
+      status: 'co-host'
+    }
+  })
+
+  if(!authenticationCheck(req.user.id, allAttendees.Group.organizerId) && !coHostOfGroup){
+    const attendeesLimited = []
+
+    for (let attendee of allAttendees.Users){
+      if(attendee.Attendance.status !== 'pending') attendeesLimited.push(attendee)
+    }
+
+    return res.json({Attendees: attendeesLimited})
+  }
+
+  res.json({Attendees: allAttendees.Users})
 })
+
+
 
 module.exports = router;

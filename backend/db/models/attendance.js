@@ -24,7 +24,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isIn: {
+          args: [['attending', 'waitlist', 'pending']],
+          msg: 'Please provide status of attending, waitlist, or pending'
+        }
+      }
     }
   }, {
     sequelize,
