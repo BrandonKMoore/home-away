@@ -60,7 +60,6 @@ router.delete('/event-images/:imageId', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
-  console.log(req.user.id, image.Event.Group.organizerId)
   const isMember = await Membership.findOne({where: {groupId: image.Event.Group.id, userId: req.user.id}})
   if(!authenticationCheck(req.user.id, image.Event.Group.organizerId) && isMember.status !== 'co-host'){
     const err = new Error("Forbidden")

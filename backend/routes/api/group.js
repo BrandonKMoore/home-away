@@ -311,7 +311,7 @@ router.get('/:groupId/events', async(req, res, next)=>{
       },
       {
         model: EventImage,
-        attributes: ['url']
+        attributes: ['url', 'preview']
       },
       {
         model: Venue,
@@ -332,6 +332,13 @@ router.get('/:groupId/events', async(req, res, next)=>{
     const { id, groupId, venueId, name, type, startDate, endDate } = ele
     const event = { id, groupId, venueId, name, type, startDate, endDate }
     event.numAttending = ele.Users.length
+    // If preview is true then show image in message
+    // for(let num in ele.EventImages){
+    //   console.log(num)
+    //   if (ele.EventImages[num].preview === true){
+    //     event.previewImage = ele.EventImages[num].url || null
+    //   }
+    // }
     event.previewImage = ele.EventImages[0].url || null
     event.Group = ele.Group
     event.Venue = ele.Venue
@@ -466,9 +473,7 @@ router.post('/:groupId/membership', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
-  const allReadyMember = await Membership.findOne({where: {userId}})
-
-  console.log(allReadyMember, allReadyMember.status)
+  const allReadyMember = await Membership.findOne({where: {userId, groupId}})
 
   if(allReadyMember){
     if(allReadyMember.status === 'pending'){

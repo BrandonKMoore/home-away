@@ -40,8 +40,8 @@ router.post('/', validateSignup, async (req, res, next)=>{
 
     if(err.errors[0].path) {
       const currentError = err.errors[0].path
-      err.message = 'User already exists',
-      err.errors = {[currentError]:  `User with that ${err.errors[0].path} already exists`}
+      err.message = `User already exists`,
+      err.errors[currentError] =  `User with that ${err.errors[0].path} already exists`
     }
     next(err)
   }
