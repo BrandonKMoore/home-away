@@ -139,6 +139,12 @@ router.post('/:groupId/images', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
+  if(!authenticationCheck(req.user.id, group.organizerId)){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
   const newImage = await group.createGroupImage({
     groupId,
     url,
@@ -500,13 +506,27 @@ router.put('/:groupId/membership', requireAuth, async(req, res, next)=>{
   const groupId = req.params.groupId
   const { memberId, status } = req.body
 
-  if(status === 'pending'){
-    const err = new Error('Bad Request')
-    err.status = 400
-    err.errors = {status:"Cannot change a membership status to pending"}
+  const group = await Group.findByPk(groupId)
+
+  if(!group) {
+    const err = new Error("Group couldn't be found")
+    err.status = 404
     return next(err)
   }
 
+  const isCoHost = await Membership.findOne({where:{userId: req.user.id, groupId, status: "co-host"}})
+
+  if(!authenticationCheck(req.user.id, group.organizerId) && !isCoHost){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  } else if (isCoHost && status === 'co-host' || !isCoHost){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
+  console.log(isCoHost && status === 'co-host', isCoHost )
 
   const user = await User.findByPk(memberId)
 
@@ -516,12 +536,10 @@ router.put('/:groupId/membership', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
-
-  const group = await Group.findByPk(groupId)
-
-  if(!group) {
-    const err = new Error("Group couldn't be found")
-    err.status = 404
+  if(status === 'pending'){
+    const err = new Error('Bad Request')
+    err.status = 400
+    err.errors = {status:"Cannot change a membership status to pending"}
     return next(err)
   }
 

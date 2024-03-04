@@ -13,9 +13,9 @@ const router = express.Router();
 const validateEventsQuery = [
   query('page', "Page must be greater than or equal to 1").optional().isInt({gt:0}),
   query('size', "Size must be greater than or equal to 1").optional().isInt({gt:0}),
-  query('name', "Name must be a string").optional().isAlphanumeric(),
-  query('type', "Type must be 'Online' or 'In person'").optional().isIn(['Online', 'In person']),
-  query('startDate', "Start date must be a valid datetime").optional().isISO8601('yyyy-mm-dd'),
+  query('name', "Name must be a string").optional().isString(),
+  query('type', "Type must be 'Online' or 'In person'").optional().isString().isIn(['Online', 'In person']),
+  query('startDate', "Start date must be a valid datetime").optional().isString().isISO8601('yyyy-mm-dd'),
   handleValidationErrors
 ]
 

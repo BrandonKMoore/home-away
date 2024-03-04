@@ -75,7 +75,7 @@ app.use((err, _req, res, _next)=>{
   // if(err.title) finalErr.title = err.title
   if(err.message) finalErr.message = err.message
   if(err.errors) finalErr.errors = err.errors
-  // if(!isProduction) finalErr.stack = err.stack
+  if(!isProduction) finalErr.stack = err.stack
   return res.json(finalErr);
 });
 
