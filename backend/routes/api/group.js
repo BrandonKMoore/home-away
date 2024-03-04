@@ -265,7 +265,7 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next)=>{
       status: 'co-host'
     }
   })
-console.log(isCoHost, group.organizerId)
+
   if(!authenticationCheck(req.user.id, group.organizerId) && !isCoHost){
     const err = new Error("Forbidden")
     err.status = 403
@@ -299,8 +299,6 @@ router.get('/:groupId/events', async(req, res, next)=>{
   const group = await Group.findByPk(req.params.groupId, {
     attributes: ['id']
   })
-
-  console.log(group)
 
   if(!group) {
     const err = new Error("Group couldn't be found")
@@ -344,7 +342,6 @@ router.get('/:groupId/events', async(req, res, next)=>{
     event.numAttending = ele.Users.length
     // If preview is true then show image in message
     // for(let num in ele.EventImages){
-    //   console.log(num)
     //   if (ele.EventImages[num].preview === true){
     //     event.previewImage = ele.EventImages[num].url || null
     //   }

@@ -259,15 +259,12 @@ const member = await Membership.findOne({
     }
   }
 
-  console.log('before', event.id)
-
   await Event.destroy({
     where: {
       id: event.id
     }
   })
 
-  console.log('after', event.id)
   res.json({"message": "Successfully deleted"})
 });
 
@@ -460,8 +457,6 @@ router.delete('/:eventId/attendance/:userId', requireAuth, async(req, res, next)
     err.status = 404
     return next(err)
   }
-
-  console.log(userId, userId == req.user.id, req.user.id)
 
   if(!authenticationCheck(req.user.id, event.Group.organizerId) && !(userId == req.user.id)){
     const err = new Error("Forbidden")
