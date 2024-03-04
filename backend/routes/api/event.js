@@ -328,7 +328,7 @@ router.get('/:eventId/attendees', async(req, res, next)=>{
 // Request to Attend an Event based on the Event's id
 router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
   const eventId = req.params.eventId
-  const { userId, status } = req.body
+  const userId = req.user.id
 
   const event = await Event.findByPk(eventId)
 
@@ -366,11 +366,13 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
+  const status = 'pending'
+
   try{
     const newAttendee = await Attendance.create({
       userId,
       eventId,
-      status: 'pending'
+      status
     })
   } catch(err){
     next(err)
