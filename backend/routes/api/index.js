@@ -30,15 +30,16 @@ router.delete('/group-images/:imageId', requireAuth, async(req, res, next)=>{
     include: [{model: Group, attributes: ['id', 'organizerId']}]
   })
 
+  const isCoHost = await Membership.findOne({where: {groupId: image.Group.id, userId: req.user.id, status: 'co-host'}})
+  if(!authenticationCheck(req.user.id, image.Group.organizerId) && !isCoHost){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
   if(!image) {
     const err = new Error("Group Image couldn't be found")
     err.status = 404
-    return next(err)
-  }
-  const isMember = await Membership.findOne({where: {groupId: image.Group.id, userId: req.user.id}})
-  if(!authenticationCheck(req.user.id, image.Group.organizerId) && isMember.status !== 'co-host'){
-    const err = new Error("Forbidden")
-    err.status = 403
     return next(err)
   }
 
@@ -54,18 +55,20 @@ router.delete('/event-images/:imageId', requireAuth, async(req, res, next)=>{
     include: [{model: Event, attributes: ['id'], include: {model: Group, attributes: ['id', 'organizerId']}}]
   })
 
+  const isCoHost = await Membership.findOne({where: {groupId: image.Event.Group.id, userId: req.user.id, status: 'co-host'}})
+
+  if(!authenticationCheck(req.user.id, image.Event.Group.organizerId) && !isCoHost){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
   if(!image) {
     const err = new Error("Event Image couldn't be found")
     err.status = 404
     return next(err)
   }
 
-  const isMember = await Membership.findOne({where: {groupId: image.Event.Group.id, userId: req.user.id}})
-  if(!authenticationCheck(req.user.id, image.Event.Group.organizerId) && isMember.status !== 'co-host'){
-    const err = new Error("Forbidden")
-    err.status = 403
-    return next(err)
-  }
 
   await image.destroy()
 

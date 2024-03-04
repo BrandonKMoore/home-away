@@ -141,12 +141,14 @@ router.post('/:eventId/images', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
-  const member = await Membership.findOne({
+  const isCoHost = await Membership.findOne({
     where: {
       groupId: event.groupId,
-      userId: req.user.id
+      userId: req.user.id,
+      status: 'co-host'
     }
   })
+
   const attendee = await Attendance.findOne({
     where: {
       eventId: event.id,
@@ -155,22 +157,14 @@ router.post('/:eventId/images', requireAuth, async(req, res, next)=>{
   })
 
   // Authorazation: Current User must be an attendee, host, or co-host of the event
-  if(!authenticationCheck(req.user.id, event.Group.organizerId) && !member && !attendee){
+  if(!authenticationCheck(req.user.id, event.Group.organizerId) && !isCoHost && !attendee){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
-  } else if (member){
-    if (member.status !== 'co-host'){
-    const err = new Error("Forbidden")
-    err.status = 403
-    return next(err)
-    }
   } else if (attendee){
-    if (attendee.status !== 'Going'){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
-    }
   }
 
   const newEventImage = await event.createEventImage(req.body);
@@ -338,6 +332,19 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
+  const member = await Membership.findOne({
+    where: {
+      groupId: event.groupId,
+      userId
+    }
+  })
+
+  if(!member){
+    const err = new Error("Forbidden")
+    err.status = 403
+    return next(err)
+  }
+
   const attendee = await Attendance.findOne({
     where: {
       userId,
@@ -350,19 +357,6 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
     if(attendee.status === 'pending') err.message = "Attendance has already been requested"
     if(attendee.status === 'attending') err.message = "User is already an attendee of the event"
     err.status = 400
-    return next(err)
-  }
-
-  const member = await Membership.findOne({
-    where: {
-      groupId: event.groupId,
-      userId
-    }
-  })
-
-  if(!member){
-    const err = new Error("Forbidden")
-    err.status = 403
     return next(err)
   }
 

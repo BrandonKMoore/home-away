@@ -21,7 +21,7 @@ module.exports = {
         state: 'Florida'
       },
       {
-        organizerId: 3,
+        organizerId: 4,
         name: 'Pick Up Basketball',
         about: 'We post locations and time where we all get together and hoop. We post locations and time where we all get together and hoop. We post locations and time where we all get together and hoop.',
         type: 'In person',

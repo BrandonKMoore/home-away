@@ -226,13 +226,14 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next)=>{
     return next(err)
   }
 
-  const member = await group.getMemberships({
+  const member = await Membership.findOne({
     where: {
-      userId: req.user.id
+      userId: req.user.id,
+      groupId: group.id
     }
   })
 
-  if(!authenticationCheck(req.user.id, group.organizerId) && member[0].status !== 'co-host'){
+  if(!authenticationCheck(req.user.id, group.organizerId) && member.status !== 'co-host'){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
@@ -256,13 +257,15 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next)=>{
     return next(err)
   }
 
-  const member = await group.getMemberships({
+  const isCoHost = await Membership.findOne({
     where: {
-      userId: req.user.id
+      userId: req.user.id,
+      groupId,
+      status: 'co-host'
     }
   })
-
-  if(!authenticationCheck(req.user.id, group.organizerId) && member[0].status !== 'co-host'){
+console.log(isCoHost, group.organizerId)
+  if(!authenticationCheck(req.user.id, group.organizerId) && !isCoHost){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
@@ -520,13 +523,11 @@ router.put('/:groupId/membership', requireAuth, async(req, res, next)=>{
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
-  } else if (isCoHost && status === 'co-host' || !isCoHost){
+  } else if (isCoHost && status === 'co-host'){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
   }
-
-  console.log(isCoHost && status === 'co-host', isCoHost )
 
   const user = await User.findByPk(memberId)
 
