@@ -13,7 +13,7 @@ const router = express.Router();
 const validateEventsQuery = [
   query('page', "Page must be greater than or equal to 1").optional().isInt({gt:0}),
   query('size', "Size must be greater than or equal to 1").optional().isInt({gt:0}),
-  query('name', "Name must be a string").optional().isString(),
+  query('name', "Name must be a string").optional().isString().not().isBoolean().not().isInt(),
   query('type', "Type must be 'Online' or 'In person'").optional().isString().isIn(['Online', 'In person']),
   query('startDate', "Start date must be a valid datetime").optional().isString().isISO8601('yyyy-mm-dd'),
   handleValidationErrors
@@ -152,16 +152,13 @@ router.post('/:eventId/images', requireAuth, async(req, res, next)=>{
   const attendee = await Attendance.findOne({
     where: {
       eventId: event.id,
-      userId: req.user.id
+      userId: req.user.id,
+      status: 'attending'
     }
   })
 
   // Authorazation: Current User must be an attendee, host, or co-host of the event
   if(!authenticationCheck(req.user.id, event.Group.organizerId) && !isCoHost && !attendee){
-    const err = new Error("Forbidden")
-    err.status = 403
-    return next(err)
-  } else if (attendee){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
@@ -335,7 +332,8 @@ router.post('/:eventId/attendance', requireAuth, async(req, res, next)=>{
   const member = await Membership.findOne({
     where: {
       groupId: event.groupId,
-      userId
+      userId,
+      status: 'member'
     }
   })
 
