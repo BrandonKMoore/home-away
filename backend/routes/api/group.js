@@ -226,14 +226,15 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next)=>{
     return next(err)
   }
 
-  const member = await Membership.findOne({
+  const isCoHost = await Membership.findOne({
     where: {
       userId: req.user.id,
-      groupId: group.id
+      groupId: group.id,
+      status: 'co-host'
     }
   })
 
-  if(!authenticationCheck(req.user.id, group.organizerId) && member.status !== 'co-host'){
+  if(!authenticationCheck(req.user.id, group.organizerId) && !isCoHost){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)
@@ -361,6 +362,7 @@ router.get('/:groupId/events', async(req, res, next)=>{
 // Create an Event for a Group specified by its id
 router.post('/:groupId/events', requireAuth, async(req, res, next)=>{
   const newEvent = {}
+  const groupId = req.params.groupId
 
   for (let key in req.body){
     newEvent[key] = req.body[key]
@@ -383,13 +385,15 @@ router.post('/:groupId/events', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
-  const member = await group.getMemberships({
+  const isCoHost = await Membership.findOne({
     where: {
-      userId: req.user.id
+      userId: req.user.id,
+      groupId,
+      status: 'co-host'
     }
   })
 
-  if(!authenticationCheck(req.user.id, group.organizerId) && member[0].status !== 'co-host'){
+  if(!authenticationCheck(req.user.id, group.organizerId) && !isCoHost){
     const err = new Error("Forbidden")
     err.status = 403
     return next(err)

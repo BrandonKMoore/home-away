@@ -19,14 +19,15 @@ router.put('/:venueId', requireAuth, async(req, res, next)=>{
     return next(err)
   }
 
-  const member = await Membership.findOne({
+  const isCoHost = await Membership.findOne({
     where: {
       userId: req.user.id,
-      groupId: venue.Group.id
+      groupId: venue.Group.id,
+      status: 'co-host'
     }
   })
 
-if(!authenticationCheck(req.user.id, venue.Group.organizerId) && member.status !== 'co-host'){
+if(!authenticationCheck(req.user.id, venue.Group.organizerId) && !isCoHost){
   const err = new Error("Forbidden")
   err.status = 403
   return next(err)
