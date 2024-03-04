@@ -102,7 +102,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Price is invalid"
         },
         min: {
-          args: 0,
+          args: 0.01,
           msg: "Price is invalid"
         }
       }

@@ -220,7 +220,7 @@ router.put('/:eventId', requireAuth, async(req, res, next)=>{
     }
   }
 
-  if(!await Venue.findByPk(event.venueId)){
+  if(!await Venue.findByPk(req.body.venueId)){
     err = new Error("Venue couldn't be found")
     err.status = 404
     return next(err)
