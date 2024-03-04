@@ -10,7 +10,7 @@ const routes = require('./routes');
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
-const { ValidationError } = require('sequelize');
+const { ValidationError, ValidationErrorItem } = require('sequelize');
 
 const app = express();
 
@@ -56,8 +56,11 @@ app.use((err, _req, _res, next)=>{
     for (let error of err.errors) {
       errors[error.path] = error.message;
     }
-    
-    if(err.errors[0].type === 'Validation error') err.message = "Validation error"
+
+    if(err.errors[0].type === 'Validation error' ||
+      err.errors[0].type === 'notNull Violation') {
+        err.message = "Validation error"
+      }
     err.message = err.message || "Validation error"
     err.errors = errors;
     err.status = 400
@@ -72,7 +75,7 @@ app.use((err, _req, res, _next)=>{
   // if(err.title) finalErr.title = err.title
   if(err.message) finalErr.message = err.message
   if(err.errors) finalErr.errors = err.errors
-  if(!isProduction) finalErr.stack = err.stack
+  // if(!isProduction) finalErr.stack = err.stack
   return res.json(finalErr);
 });
 

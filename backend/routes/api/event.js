@@ -44,17 +44,29 @@ router.get('/', validateEventsQuery, async(req, res, next)=>{
     delete pagination.offset;
   }
 
-  const allEvents = await Event.findAll({
+  let allEvents = await Event.findAll({
     include: [
       {model: Group, attributes: ['id', 'name', 'city', 'state']},
-      {model: Venue, attributes: ['id', 'city', 'state']}],
+      {model: Venue, attributes: ['id', 'city', 'state']},
+      {model: User, attributes: ['id'], through: {attributes: []}},
+      {model: EventImage, attributes: ['url', 'preview']}],
     attributes: {
-      exclude: ['description']
+      exclude: ['description', 'capacity', 'price']
     },
     ...pagination,
   })
 
-  res.json({Events: allEvents})
+  const resEvents = []
+
+  for (let event of allEvents){
+    const { id, groupId, venueId, name, type, startDate, endDate, Group, Venue } = event;
+    const numAttending = event.Users.length
+    const previewImage = event.EventImages[0].url
+    const newStructureEvent = { id, groupId, venueId, name, type, startDate, endDate, numAttending, previewImage, Group, Venue }
+    resEvents.push(newStructureEvent)
+  }
+
+  res.json({Events: resEvents})
 })
 
 // Get details of an Event specified by its id
