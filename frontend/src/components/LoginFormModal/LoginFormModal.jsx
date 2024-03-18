@@ -63,7 +63,7 @@ function LoginFormModal() {
         {errors.credential && <p>{errors.credential}</p>}
         <button type="submit" disabled={disabledSubmitBtn}>Log In</button>
       </form>
-      <Link className='demoButton' onClick={signInDemo}>Demo User</Link>
+      <Link className='demoButton' onClick={signInDemo}>Log in as Demo User</Link>
     </>
   );
 }
