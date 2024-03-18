@@ -19,6 +19,20 @@
 }
 
 #modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   background-color:white;
+  border-radius: 5%;
+  width: 300px;
+  padding: 5px 0 25px;
+}
+
+#modal-content > form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 90%;
+  padding: 10px;
 }

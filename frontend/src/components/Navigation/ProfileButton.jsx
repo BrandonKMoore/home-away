@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import { FaCircleUser } from "react-icons/fa6";
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -34,21 +36,20 @@ function ProfileButton({ user }) {
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <>
-      <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+    <div className='buttonDiv'>
+      <button className="userMenu" onClick={toggleMenu}>
+        <div className='userIcon'><FaCircleUser /></div>
+        <div className='userArrow'>{showMenu ? <IoIosArrowUp /> : <IoIosArrowDown />}</div>
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
+        <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
         <li>
           <button onClick={logout}>Log Out</button>
         </li>
       </ul>
-    </>
+    </div>
   );
 }
 
 export default ProfileButton;
-

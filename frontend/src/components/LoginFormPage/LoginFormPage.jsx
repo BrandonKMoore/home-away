@@ -10,7 +10,6 @@ function LoginFormPage() {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-
   if (sessionUser) return <Navigate to="/" replace={true} />;
 
   const handleSubmit = (e) => {
@@ -23,7 +22,6 @@ function LoginFormPage() {
       }
     );
   };
-
   return (
     <>
       <h1>Log In</h1>

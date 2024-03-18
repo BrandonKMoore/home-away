@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 
 function OpenModalButton({
@@ -14,7 +15,7 @@ function OpenModalButton({
     if (typeof onButtonClick === "function") onButtonClick();
   };
 
-  return <button onClick={onClick}>{buttonText}</button>;
+  return <NavLink className='authlink' onClick={onClick}>{buttonText}</NavLink>;
 }
 
 export default OpenModalButton;

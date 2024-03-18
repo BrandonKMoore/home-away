@@ -1,7 +1,76 @@
 .profile-dropdown {
   position: absolute;
+  padding: 0 5px;
+  right: 0px;
+  top: 120%;
+  color: #E1B536;
+  background-color: black;
+  border: solid 2px #E1B536;
+}
+
+.profile-dropdown > li > button {
+  color: #E1B536;
+  text-align: left;
+  background-color: transparent;
+  border: 0;
+  padding-top: 5px;
+  border-top: 1px rgb(82, 0, 0) solid;
+  width: 100%;
+}
+
+.profile-dropdown > li {
+  padding: 2px;
+  font-size: 12px;
+}
+
+.buttonDiv{
+  position:relative;
+  /* cursor: pointer; */
 }
 
 .hidden {
   display: none;
+}
+
+.navigation {
+  padding: 5px 2em 0px 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  height: 3em;
+  border-bottom: solid 1px red;
+}
+
+#logoImg {
+  width: 50%;
+}
+
+.authlink {
+  text-decoration: none;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #E1B536;
+}
+
+.userMenu {
+  background-color: transparent;
+  border-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 3px
+}
+
+.userMenu > div {
+  color:#E1B536;
+  background-color: transparent;
+
+}
+
+.userIcon > svg {
+  font-size: 1.7em;
+}
+
+.userArrow > svg {
+  font-size: 1.2em;
 }
