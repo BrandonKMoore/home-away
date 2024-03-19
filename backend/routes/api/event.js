@@ -61,7 +61,7 @@ router.get('/', validateEventsQuery, async(req, res, next)=>{
   for (let event of allEvents){
     const { id, groupId, venueId, name, type, startDate, endDate, Group, Venue } = event;
     const numAttending = event.Users.length
-    const previewImage = event.EventImages[0].url
+    const previewImage = event.EventImages.length ? event.EventImages[0].url : null
     const newStructureEvent = { id, groupId, venueId, name, type, startDate, endDate, numAttending, previewImage, Group, Venue }
     resEvents.push(newStructureEvent)
   }
