@@ -16,7 +16,6 @@ export default function Events (){
     <div>
       {Object.values(eventsList).map((event)=> (
         <div className="eventCard" key={event.id}>
-          {console.log(event)}
           <div className="topEventCard">
             <div className="eventListImage">
               <img src={placeholder} alt="" />

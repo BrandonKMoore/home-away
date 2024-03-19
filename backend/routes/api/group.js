@@ -12,14 +12,16 @@ router.get('/', async (req, res)=>{
   const allGroups = await Group.scope().findAll({
      include: [
       {model: Membership, attributes: ['id']},
-      {model: GroupImage, attributes: ['url', 'preview']}
+      {model: GroupImage, attributes: ['url', 'preview']},
+      {model: Event, attributes: ['id']}
     ]
   })
 
   allGroups.forEach(ele => {
-    const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Memberships, GroupImages } = ele
+    const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Memberships, Events, GroupImages } = ele
     const group = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt}
     group.numMembers = Memberships.length
+    group.numEvents = Events.length
 
     for(image of GroupImages){
       if(image.preview === true) group.previewImage = image.url
