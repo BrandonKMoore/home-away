@@ -10,7 +10,7 @@ export default function LandingPage () {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <div className="page-container" id="landing-page">
+    <div className="small-page-container" id="landing-page">
       <div id="top">
         <div id="headerText">
           <h1>The people platform where interests become friendships</h1>
