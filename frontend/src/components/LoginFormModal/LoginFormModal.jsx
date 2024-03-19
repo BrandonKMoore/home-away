@@ -32,7 +32,7 @@ function LoginFormModal() {
   }, [credential.length, password.length])
 
 
-  const signInDemo = (e) =>{
+  const signInDemo = () =>{
     return dispatch(sessionActions.login({ credential: "tristin.dougherty@user.io", password: "TDougherty2!" }))
     .then(closeModal)
   }

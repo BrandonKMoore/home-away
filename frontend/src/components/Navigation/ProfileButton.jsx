@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { FaCircleUser } from "react-icons/fa6";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileButton({ user }) {
   const navigate = useNavigate();
