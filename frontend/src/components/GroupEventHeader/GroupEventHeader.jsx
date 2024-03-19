@@ -7,14 +7,15 @@ export default function GroupEventHeader(){
 
   useEffect(() => {
     const test = document.querySelector('a.active')
-    setIsEvent(test.innerText === 'Events' ? 'Events' : 'Groups')
+    console.log(test)
+    // setIsEvent(test.innerText === 'Events' ? 'Events' : 'Groups')
   },[isEvent])
 
   return (
     <div className="small-page-container">
       <nav id="group-event-nav">
-        <NavLink to='events'><h2>Events</h2></NavLink>
-        <NavLink to='groups'><h2>Groups</h2></NavLink>
+        <NavLink to='/events'><h2>Events</h2></NavLink>
+        <NavLink to='/groups'><h2>Groups</h2></NavLink>
       </nav>
       <span>{isEvent} in Meetup</span>
       <Outlet />

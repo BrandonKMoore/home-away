@@ -10,6 +10,7 @@ import * as sessionActions from './store/session';
 import { Modal } from './context/Modal';
 import Groups from './components/Groups';
 import Events from './components/Events';
+import GroupDetails from './components/GroupDetails';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -47,19 +48,22 @@ const router = createBrowserRouter([
       //   element: <SignupFormPage />
       // }
       {
-        element: <GroupEventHeader />,
+        path: 'groups',
         children: [
           {
-            path: 'groups',
+            index: true,
             element: <Groups />,
-            children: []
           },
           {
-            path: 'events',
-            element: <Events />,
-            children: []
+            path: ':groupId',
+            element: <GroupDetails />
           },
         ]
+      },
+      {
+        path: 'events',
+        element: <Events />,
+        children: []
       },
       {
         path: '*',
