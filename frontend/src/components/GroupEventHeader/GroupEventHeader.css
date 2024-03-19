@@ -1,0 +1,13 @@
+#group-event-nav {
+  display: flex;
+  gap: 10px;
+}
+
+#group-event-nav > a:hover {
+  text-decoration: underline;
+}
+
+#group-event-nav > .active {
+  text-decoration: underline;
+  cursor: default;
+}

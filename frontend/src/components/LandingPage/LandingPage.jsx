@@ -25,7 +25,7 @@ export default function LandingPage () {
       <div id='bottom'>
         <div className="navOptions group">
           <img src={placeHolderImage} alt="" />
-          <Link><h3>See all groups</h3></Link>
+          <Link to="groups"><h3>See all groups</h3></Link>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
         </div>
         <div className="navOptions event">

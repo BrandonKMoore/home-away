@@ -2,22 +2,18 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { getAllGroups } from "../../store/groups";
 import placeholder from '/favicon.ico'
+import './Groups.css'
 
 export default function Groups (){
   const dispatch = useDispatch();
   const groupsList = useSelector(state => state.groups)
 
-  console.log(groupsList)
-
   useEffect(()=> {
     dispatch(getAllGroups())
   }, [dispatch])
 
-  function isPublic(group){
-
-  }
   return (
-    <div className="small-page-container">
+    <div>
       {Object.values(groupsList).map((group)=> (
         <div className="groupCard" key={group.id}>
           <div className="groupListImage">

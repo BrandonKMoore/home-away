@@ -5,9 +5,11 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 // import SignupFormPage from './components/SignupFormPage';
 import LandingPage from './components/LandingPage';
 import Navigation from './components/Navigation/Navigation';
+import GroupEventHeader from './components/GroupEventHeader';
 import * as sessionActions from './store/session';
 import { Modal } from './context/Modal';
 import Groups from './components/Groups';
+import Events from './components/Events';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -45,9 +47,19 @@ const router = createBrowserRouter([
       //   element: <SignupFormPage />
       // }
       {
-        path: 'groups',
-        element: <Groups />,
-        children: []
+        element: <GroupEventHeader />,
+        children: [
+          {
+            path: 'groups',
+            element: <Groups />,
+            children: []
+          },
+          {
+            path: 'events',
+            element: <Events />,
+            children: []
+          },
+        ]
       },
       {
         path: '*',
