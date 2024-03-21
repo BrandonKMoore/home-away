@@ -16,7 +16,7 @@ export default function Events (){
   return (
     <>
       <GroupEventHeader />
-      <div>
+      <div className="small-page-container">
         {Object.values(eventsList).map((event)=> (
           <div className="eventCard" key={event.id}>
             <div className="topEventCard">

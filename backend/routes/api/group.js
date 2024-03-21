@@ -13,17 +13,18 @@ router.get('/', async (req, res)=>{
      include: [
       {model: Membership, attributes: ['id']},
       {model: GroupImage, attributes: ['url', 'preview']},
-      {model: Event, attributes: ['id']}
+      {model: User, attributes: ['id', 'firstName', 'lastName']},
+      {model: Event, include: [{model: EventImage}, {model: Venue}]},
     ]
   })
 
   allGroups.forEach(ele => {
-    const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Memberships, Events, GroupImages } = ele
-    const group = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt}
+    const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Memberships, Events, GroupImages, User } = ele
+    const group = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Events, GroupImages, User}
     group.numMembers = Memberships.length
     group.numEvents = Events.length
 
-    for(image of GroupImages){
+    for(let image of GroupImages){
       if(image.preview === true) group.previewImage = image.url
     }
 
@@ -76,10 +77,11 @@ router.get('/current', requireAuth, async(req, res)=> {
 router.get('/:groupId', async(req, res, next)=>{
   let group = await Group.scope().findByPk(req.params.groupId, {
     include: [
+      {model: Event, attributes: ['id']},
       {model: Membership, attributes: ['id']},
       {model: GroupImage, attributes: ['id', 'url', 'preview']},
       {model: User, attributes: ['id', 'firstName', 'lastName']},
-      {model: Venue}
+      {model: Venue},
     ]
   })
 
@@ -89,12 +91,13 @@ router.get('/:groupId', async(req, res, next)=>{
     return next(err)
   }
 
-   const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Memberships, GroupImages, Venues } = group
+   const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Events, Memberships, GroupImages, Venues } = group
    const altGroup = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt}
    altGroup.numMembers = Memberships.length
    altGroup.GroupImages = GroupImages
    altGroup.Organizer = group.User
    altGroup.Venues = Venues
+   altGroup.numEvents = Events.length
 
    for(let key in altGroup){
      if(altGroup[key] === null) delete altGroup[key]

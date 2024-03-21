@@ -35,7 +35,7 @@ export default function LandingPage () {
         </div>
         <div className="navOptions newGroup">
           <img src={placeHolderImage} alt="" />
-          <Link><h3>Start a new group</h3></Link>
+          <Link to='groups/new'><h3>Start a new group</h3></Link>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
         </div>
       </div>

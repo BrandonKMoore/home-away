@@ -19,7 +19,7 @@ module.exports = {
       {
         eventId: 3,
         url: 'https://images.pexels.com/photos/20367730/pexels-photo-20367730/free-photo-of-woman-lying-on-a-tree-branch-by-a-body-of-water.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-        preview: false
+        preview: true
       },
       {
         eventId: 2,

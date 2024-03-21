@@ -11,6 +11,7 @@ import { Modal } from './context/Modal';
 import Groups from './components/Groups';
 import Events from './components/Events';
 import GroupDetails from './components/GroupDetails';
+import GroupFormNew from './components/GroupFormNew';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
             path: ':groupId',
             element: <GroupDetails />
           },
+          {
+            path: 'new',
+            element: <GroupFormNew />
+          }
         ]
       },
       {

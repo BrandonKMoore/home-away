@@ -17,12 +17,10 @@ export default function Groups (){
     dispatch(getAllGroups())
   }, [dispatch])
 
-  console.log(groupsList)
-
   return (
     <>
     <GroupEventHeader />
-    <div>
+    <div className="small-page-container">
       {Object.values(groupsList).map((group)=> (
         <Link to={String(group.id)} key={group.id}>
           <div className="groupCard">

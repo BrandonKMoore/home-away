@@ -9,6 +9,13 @@ const loadAllEvents = (events) => {
   }
 }
 
+const loadSpecificEvents = (events) => {
+  return {
+    type: GET_ALL_EVENTS,
+    events
+  }
+}
+
 export const getAllEvents = () => async dispatch => {
   const response = await csrfFetch("/api/events", {
     method: "GET"
@@ -17,6 +24,17 @@ export const getAllEvents = () => async dispatch => {
   dispatch(loadAllEvents(data.Events))
   return response;
 }
+
+export const getEventById = (id) => async dispatch => {
+  const response = await csrfFetch(`/api/${id}`, {
+    method: "GET"
+  });
+  const data = await response.json();
+  dispatch(loadAllEvents(data.Events))
+  return response;
+}
+
+
 
 const initialState = {};
 
