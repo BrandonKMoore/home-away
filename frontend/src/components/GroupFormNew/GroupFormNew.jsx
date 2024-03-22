@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
-import './GroupFormNew.css'
 import { useNavigate } from 'react-router-dom'
 import { createNewGroup } from '../../store/groups'
+import './GroupFormNew.css'
 
 export default function GroupFormNew(){
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({})
   const [location, setLocation] = useState('')
   const [name, setName] = useState('')
   const [about, setAbout] = useState('')
@@ -28,29 +28,36 @@ export default function GroupFormNew(){
 
   const handleSubmit = async(e) =>  {
     e.preventDefault()
-    // setErrors({});
+    const loadedErrors = {}
 
 
-    const [city, state] = location.split(',')
-    const data = {
-      organizerId: sessionUser.id,
-      name,
-      about,
-      type,
-      private: isPrivate,
-      city,
-      state,
-      imageUrl
+
+    if(!location || location.length < 3 || !location.includes(',')) loadedErrors.location = "Location is required"
+    if(!name || name.length < 3 ) loadedErrors.name = "Name is required"
+    if(!about || about.length < 30) loadedErrors.about = "Description must be at least 30 characters long"
+    if(!type) loadedErrors.type = "Group Type is required"
+    if(!isPrivate) loadedErrors.isPrivate = "Visibility Type is required"
+    if(!imageUrl.endsWith('.png') && !imageUrl.endsWith('.jpeg') && !imageUrl.endsWith('.jpg')) loadedErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
+
+    setErrors(loadedErrors);
+
+    if(!Object.entries(loadedErrors).length){
+      const [city, state] = location.split(',')
+      const data = {
+        organizerId: sessionUser.id,
+        name,
+        about,
+        type,
+        private: isPrivate,
+        city,
+        state,
+        imageUrl
+      }
+
+      let response = await dispatch(createNewGroup(data))
+      await navigate(`/groups/${response.id}`)
+      // stateReset()
     }
-
-    dispatch(createNewGroup(data))
-
-
-    console.log(newGroup)
-
-    // stateReset()
-
-
   }
 
   useEffect(()=>{
@@ -74,8 +81,8 @@ export default function GroupFormNew(){
           placeholder="City, state"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          required
         />
+        { errors.location ? <span className='new-group-error'>{errors.location}</span>: null }
         <div className="line-break"></div>
         <h3>What will your group&apos;s name be?</h3>
         <p>Choose a name that will give people a clear idea of what the group is about. Feel free to get creative! You can edit this later if you change your mind.</p>
@@ -84,8 +91,8 @@ export default function GroupFormNew(){
           placeholder="What is your group name?"
           value={name}
           onChange={(e)=> setName(e.target.value)}
-          required
         />
+        { errors.name ? <span className='new-group-error'>{errors.name}</span>: null }
         <div className="line-break"></div>
         <h3>Now describe what your group will be about</h3>
         <p>People will see this when we promote your group, but you&apos;ll be able to add to it later, too.</p>
@@ -100,8 +107,8 @@ export default function GroupFormNew(){
           placeholder="Please write at least 30 characters"
           value={about}
           onChange={(e)=> setAbout(e.target.value)}
-          required
         />
+        { errors.about ? <span className='new-group-error'>{errors.about}</span>: null }
         <div className="line-break"></div>
         <h3>Final steps...</h3>
         <div>
@@ -109,28 +116,30 @@ export default function GroupFormNew(){
           <select
             name="group-type"
             id="group-type"
-            defaultValue={null}
+            defaultValue=''
             value={type}
             onChange={(e)=> setType(e.target.value)}
             >
-            <option>(select one)</option>
+            <option value='' disabled={true}>(select one)</option>
             <option value="In-Person">In person</option>
             <option value="Online">Online</option>
           </select>
+          { errors.type ? <span className='new-group-error'>{errors.type}</span>: null }
         </div>
         <div>
           <label htmlFor="group-avail">Is this group private or public?</label>
           <select
             name="group-avail"
             id="group-avail"
-            defaultValue={null}
+            defaultValue=''
             value={isPrivate}
             onChange={(e)=> setIsPrivate(e.target.value)}
             >
-            <option>(select one)</option>
+            <option value='' disabled={true}>(select one)</option>
             <option value={false}>Public</option>
             <option value={true}>Private</option>
           </select>
+          { errors.isPrivate ? <span className='new-group-error'>{errors.isPrivate}</span>: null }
         </div>
         <div>
           <label htmlFor="group-image">Please add an image url to your group below:</label>
@@ -142,6 +151,7 @@ export default function GroupFormNew(){
             value={imageUrl}
             onChange={(e)=> setImageUrl(e.target.value)}
             />
+            { errors.imageUrl ? <span className='new-group-error'>{errors.imageUrl}</span>: null }
         </div>
         <div className="line-break"></div>
         <button type="submit">Create Group</button>

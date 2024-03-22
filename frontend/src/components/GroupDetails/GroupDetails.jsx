@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAllGroups } from '../../store/groups'
 import { useParams } from 'react-router-dom'
 import imagePlaceHolder from '/favicon.ico'
-// import { useEffect } from "react"
+import { useEffect } from "react"
 import './GroupDetails.css'
 
 
@@ -12,17 +12,13 @@ export default function GroupDetails(){
   const dispatch = useDispatch()
   const groups = useSelector(state => state.groups)
 
-  if (!Object.entries(groups).length) {
+  if (!Object.entries(groups).length === 1) {
     dispatch(getAllGroups())
   }
 
-
-
-  // useEffect(()=> {
-    //   dispatch(getAllGroups())
-    // }, [dispatch])
-
-
+  useEffect(()=> {
+      dispatch(getAllGroups())
+    }, [dispatch])
 
     try{
       let group = Object.values(groups).find(group => group.id === Number(groupId))
@@ -57,7 +53,7 @@ export default function GroupDetails(){
             <h3>What we&apos;re about</h3>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
           </div>
-            {upcomingEvents.length > 0 ? <div className="upcomingEvents">
+            {upcomingEvents.length > 1 ? <div className="upcomingEvents">
             <h3>Upcoming Events ({group.numEvents})</h3>
             {upcomingEvents.map((event)=> <div key={event.id} className='group-event-card'>
               <div className='top'>
@@ -70,8 +66,8 @@ export default function GroupDetails(){
               </div>
               <div className="group-event-description">{event.description}</div>
             </div>)}
-          </div> : null }
-          {pastEvents.length > 0 ? <div className="pastEvents">
+          </div> : <div><h3>No Upcoming Events</h3></div> }
+          {pastEvents.length > 1 ? <div className="pastEvents">
             <h3>Past Events ({group.numEvents})</h3>
             {pastEvents.map((event)=> <div key={event.id} className='group-event-card'>
               <div className='top'>

@@ -25,7 +25,7 @@ export const createNewGroup = (groupData) => async dispatch => {
   const data = await response.json();
   groupData.id = data.id
   dispatch(createGroup(groupData))
-  return response;
+  return data;
 }
 
 export const getAllGroups = () => async dispatch => {
