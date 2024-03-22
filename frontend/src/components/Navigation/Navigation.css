@@ -42,6 +42,17 @@
   border-bottom: solid 1px red;
 }
 
+.navigation > .right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  
+}
+
+.navigation > .right > .link {
+  color: #E1B536;
+}
+
 #logoImg {
   width: 50%;
 }

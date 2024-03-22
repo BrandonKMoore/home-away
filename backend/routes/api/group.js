@@ -108,7 +108,7 @@ router.get('/:groupId', async(req, res, next)=>{
 
 // Create a Group
 router.post('/', requireAuth, async(req, res, next)=>{
-  const { name, about, type, private, city, state } = req.body
+  const { name, about, type, private, city, state, imageUrl } = req.body
   const organizerId = req.user.id
   let newGroup;
   try{
@@ -121,6 +121,12 @@ router.post('/', requireAuth, async(req, res, next)=>{
       city,
       state
     });
+
+    const newImage = await newGroup.createGroupImage({
+      groupId: newGroup.id,
+      url: imageUrl,
+      preview: true
+    })
 
   } catch (err){
     err.status = 400

@@ -33,11 +33,14 @@ function Navigation({ isLoaded }) {
   return (
   <div className='navigation'>
     <Link to="/"><img src={logo} alt="home" id='logoImg' /></Link>
-    <ul>
-      <li>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+    <div className='right'>
+      {sessionUser ? <Link className='link' to='/groups/new'>Start a new group</Link> : null}
+      <ul>
+        <li>
+        </li>
+        {isLoaded && sessionLinks}
+      </ul>
+    </div>
   </div>
   );
 }

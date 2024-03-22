@@ -59,11 +59,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: {
-          msg: "About must be 50 characters or more"
+          msg: "About must be 30 characters or more"
         },
         len: {
-          args: [50,1000],
-          msg: "About must be 50 characters or more"
+          args: [30,1000],
+          msg: "About must be 30 characters or more"
         }
       }
     },
@@ -72,11 +72,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: {
-          msg: "Type must be 'Online' or 'In Person'"
+          msg: "Type must be 'Online' or 'In-Person'"
         },
         isIn: {
-          args: [['Online', 'In person']],
-          msg: "Type must be 'Online' or 'In Person'"
+          args: [['Online', 'In-Person']],
+          msg: "Type must be 'Online' or 'In-Person'"
         }
       }
     },

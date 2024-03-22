@@ -15,7 +15,7 @@ module.exports = {
         organizerId: 4,
         name: 'Chess Club R Us',
         about: 'Chess is life. Fun company we keep. Come join us! Chess is life. Fun company we keep. Come join us! Chess is life. Fun company we keep. Come join us!',
-        type: 'In person',
+        type: 'In-Person',
         private: false,
         city: 'Orlando',
         state: 'Florida'
@@ -24,7 +24,7 @@ module.exports = {
         organizerId: 4,
         name: 'Pick Up Basketball',
         about: 'We post locations and time where we all get together and hoop. We post locations and time where we all get together and hoop. We post locations and time where we all get together and hoop.',
-        type: 'In person',
+        type: 'In-Person',
         city: 'Houston',
         private: false,
         state: 'Texas'

@@ -5,7 +5,7 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 // import SignupFormPage from './components/SignupFormPage';
 import LandingPage from './components/LandingPage';
 import Navigation from './components/Navigation/Navigation';
-import GroupEventHeader from './components/GroupEventHeader';
+// import GroupEventHeader from './components/GroupEventHeader';
 import * as sessionActions from './store/session';
 import { Modal } from './context/Modal';
 import Groups from './components/Groups';

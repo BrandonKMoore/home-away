@@ -7,8 +7,7 @@ export default function GroupEventHeader(){
 
   useEffect(() => {
     const test = document.querySelector('a.active')
-    console.log(test)
-    // setIsEvent(test.innerText === 'Events' ? 'Events' : 'Groups')
+    setIsEvent(test.innerText === 'Events' ? 'Events' : 'Groups')
   },[isEvent])
 
   return (

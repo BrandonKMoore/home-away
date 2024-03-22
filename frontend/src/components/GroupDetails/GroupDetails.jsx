@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAllGroups } from '../../store/groups'
 import { useParams } from 'react-router-dom'
 import imagePlaceHolder from '/favicon.ico'
-import { useEffect } from "react"
+// import { useEffect } from "react"
 import './GroupDetails.css'
 
 
@@ -54,12 +54,12 @@ export default function GroupDetails(){
             <p>{group.User.firstName} {group.User.lastName}</p>
           </div>
           <div className="about">
-            <h3>What we're about</h3>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <h3>What we&apos;re about</h3>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
           </div>
             {upcomingEvents.length > 0 ? <div className="upcomingEvents">
             <h3>Upcoming Events ({group.numEvents})</h3>
-            {upcomingEvents.map((event)=> <div className='group-event-card'>
+            {upcomingEvents.map((event)=> <div key={event.id} className='group-event-card'>
               <div className='top'>
                 <img src={event.EventImages.find((image)=> image.preview === true).url} alt="Event Preview Image" />
                 <div className='group-event-quickdetails'>
@@ -73,7 +73,7 @@ export default function GroupDetails(){
           </div> : null }
           {pastEvents.length > 0 ? <div className="pastEvents">
             <h3>Past Events ({group.numEvents})</h3>
-            {pastEvents.map((event)=> <div className='group-event-card'>
+            {pastEvents.map((event)=> <div key={event.id} className='group-event-card'>
               <div className='top'>
                 <img src={event.EventImages.find((image)=> image.preview === true).url} alt="Event Preview Image" />
                 <div className='group-event-quickdetails'>

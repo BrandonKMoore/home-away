@@ -9,12 +9,12 @@ const loadAllEvents = (events) => {
   }
 }
 
-const loadSpecificEvents = (events) => {
-  return {
-    type: GET_ALL_EVENTS,
-    events
-  }
-}
+// const loadSpecificEvents = (events) => {
+//   return {
+//     type: GET_ALL_EVENTS,
+//     events
+//   }
+// }
 
 export const getAllEvents = () => async dispatch => {
   const response = await csrfFetch("/api/events", {
@@ -37,11 +37,11 @@ export const getEventById = (id) => async dispatch => {
 
 
 const initialState = {};
+const allEventsObj = {}
 
 function eventsReducer(state = initialState, action){
   switch (action.type){
     case GET_ALL_EVENTS:
-      const allEventsObj = {}
       action.events.forEach(event => (allEventsObj[event.id] = event))
       return allEventsObj
     default:
