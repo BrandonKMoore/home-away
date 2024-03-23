@@ -15,13 +15,20 @@ export default function GroupDetails(){
   const dispatch = useDispatch()
   const groups = useSelector(state => state.groups)
   const sessionUser = useSelector(state => state.session.user);
+  let isAuthorized;
+  let isMember;
+
 
   if (!Object.entries(groups).length === 1) {
     dispatch(getAllGroups())
   }
 
   function handleJoinButton(){
-    alert("Feature Coming Soon...")
+    if(!sessionUser) {
+      alert("You have to be signed in join a group")
+    } else {
+      alert("Feature Coming Soon...")
+    }
   }
 
   useEffect(()=> {
@@ -32,8 +39,10 @@ export default function GroupDetails(){
       let group = Object.values(groups).find(group => group.id === Number(groupId))
       const upcomingEvents = []
       const pastEvents = []
-      const isAuthorized = group.User.id === sessionUser.id;
-      const isMember = group.Memberships.find((member) => member.id === sessionUser.id);
+      if(sessionUser){
+        isAuthorized = group.User.id === sessionUser.id;
+        isMember = group.Memberships.find((member) => member.id === sessionUser.id);
+      }
       let eventsByGroup = group.Events
       eventsByGroup.map((event)=> new Date(eventsByGroup[0].startDate) > new Date() ? upcomingEvents.push(event): pastEvents.push(event))
 
@@ -52,7 +61,7 @@ export default function GroupDetails(){
               <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} * {group.private ? 'private' : 'public'}</span>
               <p>Organized by {group.User.firstName} {group.User.lastName}</p>
             </div>
-            {isMember || isAuthorized ? null : <Link onClick={handleJoinButton}>Join this group</Link>}
+            {isMember || isAuthorized || !sessionUser ? null : <Link onClick={handleJoinButton}>Join this group</Link>}
             {isAuthorized ? <div className='group-organizer-options'>
               <Link>Create event</Link>
               <Link to={`edit`}>Update</Link>
