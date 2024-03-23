@@ -22,17 +22,15 @@ export default function Groups (){
     <GroupEventHeader />
     <div className="small-page-container">
       {Object.values(groupsList).map((group)=> (
-        <Link to={String(group.id)} key={group.id}>
-          <div className="groupCard">
-            <div className="groupListImage">
-              <img src={placeholder} alt="" />
-            </div>
-            <div className="groupListDetails">
-              <h3>{group.name}</h3>
-              <p>{group.city}, {group.state}</p>
-              <p>{group.about}</p>
-              <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} * {group.private ? 'private' : 'public'}</span>
-            </div>
+        <Link className="groupCard" to={String(group.id)} key={group.id}>
+          <div className="groupListImage">
+            <img src={placeholder} alt="" />
+          </div>
+          <div className="groupListDetails">
+            <h3>{group.name}</h3>
+            <p>{group.city}, {group.state}</p>
+            <p>{group.about}</p>
+            <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} * {group.private ? 'private' : 'public'}</span>
           </div>
         </Link>
       ))}

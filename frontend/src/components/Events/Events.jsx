@@ -4,6 +4,7 @@ import GroupEventHeader from "../GroupEventHeader";
 import { getAllEvents } from "../../store/events";
 import placeholder from '/favicon.ico'
 import './Events.css'
+import { Link } from "react-router-dom";
 
 export default function Events (){
   const dispatch = useDispatch();
@@ -18,10 +19,11 @@ export default function Events (){
       <GroupEventHeader />
       <div className="small-page-container">
         {Object.values(eventsList).map((event)=> (
-          <div className="eventCard" key={event.id}>
+          <Link to={`${event.id}`} className="eventCard" key={event.id}>
             <div className="topEventCard">
               <div className="eventListImage">
-                <img src={placeholder} alt="" />
+                {console.log(event)}
+                <img src={event.previewImage} alt="" />
               </div>
               <div className="eventListDetails">
                 <p>{event.startDate}</p>
@@ -30,7 +32,7 @@ export default function Events (){
               </div>
             </div>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-          </div>
+          </Link>
         ))}
       </div>
     </>

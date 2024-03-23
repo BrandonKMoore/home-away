@@ -23,8 +23,20 @@ h3 {
   font-size: .8em;
 }
 
-p {
-  font-size: .7em
+.faint {
+  color: gray;
+}
+
+.smaller {
+  font-size: .8em;
+}
+
+.smallest {
+  font-size: .7em;
+}
+
+.small {
+  font-size: .8em
 }
 
 .small-page-container {
@@ -34,6 +46,9 @@ p {
   align-items: center;
   padding: 35px 15%;
   margin: 0px auto;
-  gap: 30px;
   max-width: 700px
+}
+
+.small-symbol {
+  font-size: 0.8em
 }

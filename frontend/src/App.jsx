@@ -13,6 +13,7 @@ import Events from './components/Events';
 import GroupDetails from './components/GroupDetails';
 import GroupFormNew from './components/GroupFormNew';
 import GroupFormEdit from './components/GroupFormEdit';
+import EventDetails from './components/EventDetails';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -66,19 +67,27 @@ const router = createBrowserRouter([
               {
                 path: 'edit',
                 element: <GroupFormEdit />
-              }
+              },
             ]
           },
           {
             path: 'new',
             element: <GroupFormNew />
-          },
+          }
         ]
       },
       {
         path: 'events',
-        element: <Events />,
-        children: []
+        children: [
+          {
+            index: true,
+            element: <Events />,
+          },
+          {
+            path: ':eventId',
+            element: <EventDetails />
+          }
+        ]
       },
       {
         path: '*',

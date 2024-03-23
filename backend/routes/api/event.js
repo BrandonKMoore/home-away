@@ -5,7 +5,7 @@ const { check, query } = require('express-validator');
 
 const { handleValidationErrors } = require('../../utils/validation')
 
-const { Event, Group, Venue, User, EventImage, Membership, Attendance } = require('../../db/models');
+const { Event, Group, Venue, User, EventImage, Membership, Attendance, GroupImage } = require('../../db/models');
 const attendance = require('../../db/models/attendance');
 
 const router = express.Router();
@@ -46,23 +46,24 @@ router.get('/', validateEventsQuery, async(req, res, next)=>{
 
   let allEvents = await Event.findAll({
     include: [
-      {model: Group, attributes: ['id', 'name', 'city', 'state']},
+      {model: Group, attributes: ['id', 'name', 'private'],
+        include: [
+          {model: User, attributes: ['id', 'firstName', 'lastName']},
+          {model: GroupImage}
+        ]},
       {model: Venue, attributes: ['id', 'city', 'state']},
       {model: User, attributes: ['id'], through: {attributes: []}},
       {model: EventImage, attributes: ['url', 'preview']}],
-    attributes: {
-      exclude: ['description', 'capacity', 'price']
-    },
     ...pagination,
   })
 
   const resEvents = []
 
   for (let event of allEvents){
-    const { id, groupId, venueId, name, type, startDate, endDate, Group, Venue } = event;
+    const { id, groupId, venueId, name, type, startDate, endDate, Group, Venue, price, description } = event;
     const numAttending = event.Users.length
     const previewImage = event.EventImages.length ? event.EventImages[0].url : null
-    const newStructureEvent = { id, groupId, venueId, name, type, startDate, endDate, numAttending, previewImage, Group, Venue }
+    const newStructureEvent = { id, groupId, venueId, name, type, startDate, endDate, numAttending, previewImage, Group, Venue, price, description }
     resEvents.push(newStructureEvent)
   }
 

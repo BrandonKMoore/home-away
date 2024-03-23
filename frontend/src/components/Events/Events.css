@@ -1,3 +1,19 @@
+.eventCard {
+  border-top: 1px solid grey;
+  padding: 10px ;
+}
+
+.eventListImage {
+  height: 200px;
+  width: 200px;
+}
+
+.eventListImage > img {
+  height: 200px;
+  width: 200px;
+}
+
 .topEventCard {
   display: flex;
+  gap: 25px
 }

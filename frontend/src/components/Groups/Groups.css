@@ -1,5 +1,6 @@
 .groupCard {
   display: flex;
-  padding: 10px ;
+  padding: 10px;
   border-top: 1px solid grey;
+  width: 100%
 }
