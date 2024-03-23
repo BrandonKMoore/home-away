@@ -63,7 +63,7 @@ export default function GroupDetails(){
             </div>
             {isMember || isAuthorized || !sessionUser ? null : <Link onClick={handleJoinButton}>Join this group</Link>}
             {isAuthorized ? <div className='group-organizer-options'>
-              <Link>Create event</Link>
+              <Link to='events/new'>Create event</Link>
               <Link to={`edit`}>Update</Link>
               <OpenModalButton buttonText="Delete" modalComponent={<DeleteModal group={group}/>} />
             </div> : null}
