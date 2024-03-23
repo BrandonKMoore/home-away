@@ -20,7 +20,7 @@ router.get('/', async (req, res)=>{
 
   allGroups.forEach(ele => {
     const { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Memberships, Events, GroupImages, User } = ele
-    const group = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Events, GroupImages, User}
+    const group = { id, organizerId, name, about,type, private, city, state, createdAt, updatedAt, Events, GroupImages, User, Memberships}
     group.numMembers = Memberships.length
     group.numEvents = Events.length
 

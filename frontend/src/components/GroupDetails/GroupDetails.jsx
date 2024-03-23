@@ -1,38 +1,50 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllGroups } from '../../store/groups'
-import { useParams } from 'react-router-dom'
-import imagePlaceHolder from '/favicon.ico'
+import { Link, useParams } from 'react-router-dom'
 import { useEffect } from "react"
-import './GroupDetails.css'
 
+import { getAllGroups } from '../../store/groups'
+import OpenModalButton from '../OpenModalButton'
+import DeleteModal from '../DeleteModal'
+
+import imagePlaceHolder from '/image.jpeg'
+import './GroupDetails.css'
 
 
 export default function GroupDetails(){
   const { groupId } = useParams()
   const dispatch = useDispatch()
   const groups = useSelector(state => state.groups)
+  const sessionUser = useSelector(state => state.session.user);
 
   if (!Object.entries(groups).length === 1) {
     dispatch(getAllGroups())
   }
 
+  function handleJoinButton(){
+    alert("Feature Coming Soon...")
+  }
+
   useEffect(()=> {
       dispatch(getAllGroups())
+      groups
     }, [dispatch])
 
     try{
       let group = Object.values(groups).find(group => group.id === Number(groupId))
       const upcomingEvents = []
       const pastEvents = []
+      const isAuthorized = group.User.id === sessionUser.id;
+      const isMember = group.Memberships.find((member) => member.id === sessionUser.id);
       let eventsByGroup = group.Events
       eventsByGroup.map((event)=> new Date(eventsByGroup[0].startDate) > new Date() ? upcomingEvents.push(event): pastEvents.push(event))
 
-      console.log(upcomingEvents)
+
     return (
       <div className="small-page-container">
+        <Link to="/groups">{`< Groups`}</Link>
         <div className='group-details-hero'>
           <div className='group-details-image-container'>
-          {group.GroupImages.length ? <img src={group.GroupImages[0].url} alt="" /> : <img src={imagePlaceHolder} alt="" />}
+          {group.GroupImages.length ? <img src={imagePlaceHolder} alt="" /> : <img src={group.GroupImages[0].url} alt="" />}
           </div>
           <div className="group-quick-details">
             <div className="group-quick-details-top">
@@ -41,7 +53,14 @@ export default function GroupDetails(){
               <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} * {group.private ? 'private' : 'public'}</span>
               <p>Organized by {group.User.firstName} {group.User.lastName}</p>
             </div>
-            <a>Join this group</a>
+            {isMember || isAuthorized ? null : <Link onClick={handleJoinButton}>Join this group</Link>}
+            {isAuthorized ? <div className='group-organizer-options'>
+              <Link>Create event</Link>
+              <Link to={`edit`}>Update</Link>
+              <OpenModalButton buttonText="Delete" modalComponent={<DeleteModal group={group}/>} />
+            </div> : null}
+
+
           </div>
         </div>
         <div className="group-details-body">

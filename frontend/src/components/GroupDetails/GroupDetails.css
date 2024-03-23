@@ -10,7 +10,7 @@
   justify-content: space-between;
 }
 
-.group-quick-details > a {
+.group-quick-details a {
   text-align: center;
   padding: 3px 10px;
   width: fit-content;

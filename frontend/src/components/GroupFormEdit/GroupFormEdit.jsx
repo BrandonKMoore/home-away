@@ -1,21 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { createNewGroup } from '../../store/groups'
-import './GroupFormNew.css'
+import { useNavigate, useParams } from 'react-router-dom'
+import { editCurrGroup, getAllGroups } from '../../store/groups'
+import './GroupFormEdit.css'
 
-export default function GroupFormNew(){
+export default function GroupFormEdit(){
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [errors, setErrors] = useState({})
-  const [location, setLocation] = useState('')
-  const [name, setName] = useState('')
-  const [about, setAbout] = useState('')
-  const [type, setType] = useState('')
-  const [isPrivate, setIsPrivate] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
+  const {groupId} = useParams()
   const sessionUser = useSelector(state => state.session.user);
-  // const newGroup = useSelector(state => state.group)
+  const group = useSelector(state => state.groups[groupId])
+  const [errors, setErrors] = useState({})
+  const [location, setLocation] = useState(`${group.city}, ${group.state}`)
+  const [name, setName] = useState(group.name)
+  const [about, setAbout] = useState(group.about)
+  const [type, setType] = useState(group.type)
+  const [isPrivate, setIsPrivate] = useState(group.private)
+  const [imageUrl, setImageUrl] = useState(group.previewImage)
 
   // function stateReset(){
   //   setLocation('')
@@ -26,20 +27,22 @@ export default function GroupFormNew(){
   //   setImageUrl('')
   // }
 
+
   const handleSubmit = async(e) =>  {
     e.preventDefault()
     const loadedErrors = {}
-
 
 
     if(!location || location.length < 3 || !location.includes(',')) loadedErrors.location = "Location is required"
     if(!name || name.length < 3 ) loadedErrors.name = "Name is required"
     if(!about || about.length < 30) loadedErrors.about = "Description must be at least 30 characters long"
     if(!type) loadedErrors.type = "Group Type is required"
-    if(!isPrivate) loadedErrors.isPrivate = "Visibility Type is required"
-    if(!imageUrl.endsWith('.png') && !imageUrl.endsWith('.jpeg') && !imageUrl.endsWith('.jpg')) loadedErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
+    if(isPrivate || isPrivate !== false) loadedErrors.isPrivate = "Visibility Type is required"
+    // if(!imageUrl.endsWith('.png') && !imageUrl.endsWith('.jpeg') && !imageUrl.endsWith('.jpg')) loadedErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
 
     setErrors(loadedErrors);
+
+    console.log(group.id)
 
     if(!Object.entries(loadedErrors).length){
       const [city, state] = location.split(',')
@@ -51,22 +54,22 @@ export default function GroupFormNew(){
         private: isPrivate,
         city,
         state,
-        imageUrl
+        imageUrl,
+        id: group.id
       }
 
-      let response = await dispatch(createNewGroup(data))
-      await navigate(`/groups/${response.id}`)
+      let response = await dispatch(editCurrGroup(data))
+      await navigate(`/groups/${group.id}`)
       // stateReset()
     }
   }
 
   useEffect(()=>{
-    if(!sessionUser) {
+    if(sessionUser.id !== group.organizerId) {
       navigate('/')
       alert('Sign in to create new group')
     }
   }, [sessionUser, navigate])
-
 
   return (
     <div className='small-page-container'>
@@ -116,7 +119,6 @@ export default function GroupFormNew(){
           <select
             name="group-type"
             id="group-type"
-            defaultValue=''
             value={type}
             onChange={(e)=> setType(e.target.value)}
             >
@@ -131,7 +133,6 @@ export default function GroupFormNew(){
           <select
             name="group-avail"
             id="group-avail"
-            defaultValue=''
             value={isPrivate}
             onChange={(e)=> setIsPrivate(e.target.value)}
             >
@@ -154,7 +155,7 @@ export default function GroupFormNew(){
             { errors.imageUrl ? <span className='new-group-error'>{errors.imageUrl}</span>: null }
         </div>
         <div className="line-break"></div>
-        <button type="submit">Create Group</button>
+        <button type="submit">Update Group</button>
       </form>
     </div>
   )
