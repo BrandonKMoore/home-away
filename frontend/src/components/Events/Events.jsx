@@ -23,7 +23,7 @@ export default function Events (){
             <div className="topEventCard">
               <div className="eventListImage">
                 {console.log(event)}
-                <img src={event.previewImage} alt="" />
+                <img src={event.previewImage ? event.previewImage : placeholder} alt="" />
               </div>
               <div className="eventListDetails">
                 <p>{event.startDate}</p>

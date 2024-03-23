@@ -90,9 +90,9 @@ function groupsReducer(state = initialState, action){
     case EDIT_GROUP:
       return {}
       case DELETE_GROUP:
-        const newState = {...state}
-        delete newState[action.group.id]
-      return {...newState}
+        initialState = {...state}
+        delete initialState[action.group.id]
+      return {...initialState}
     case CREATE_NEW_GROUP:
       return {...state, ...action.groupData}
     default:

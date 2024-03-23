@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { editCurrGroup, getAllGroups } from '../../store/groups'
+import { editCurrGroup } from '../../store/groups'
 import './GroupFormEdit.css'
 
 export default function GroupFormEdit(){
@@ -42,8 +42,6 @@ export default function GroupFormEdit(){
 
     setErrors(loadedErrors);
 
-    console.log(group.id)
-
     if(!Object.entries(loadedErrors).length){
       const [city, state] = location.split(',')
       const data = {
@@ -58,7 +56,7 @@ export default function GroupFormEdit(){
         id: group.id
       }
 
-      let response = await dispatch(editCurrGroup(data))
+      await dispatch(editCurrGroup(data))
       await navigate(`/groups/${group.id}`)
       // stateReset()
     }
@@ -69,7 +67,7 @@ export default function GroupFormEdit(){
       navigate('/')
       alert('Sign in to create new group')
     }
-  }, [sessionUser, navigate])
+  }, [sessionUser, navigate, group.organizerId])
 
   return (
     <div className='small-page-container'>

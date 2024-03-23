@@ -26,7 +26,6 @@ export default function GroupDetails(){
 
   useEffect(()=> {
       dispatch(getAllGroups())
-      groups
     }, [dispatch])
 
     try{

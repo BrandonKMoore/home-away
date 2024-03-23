@@ -10,7 +10,6 @@ import './Groups.css'
 
 export default function Groups (){
   const dispatch = useDispatch();
-
   const groupsList = useSelector(state => state.groups)
 
   useEffect(()=> {
