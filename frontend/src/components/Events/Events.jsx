@@ -14,26 +14,48 @@ export default function Events (){
     dispatch(getAllEvents())
   }, [dispatch])
 
+  const upcomingEvents = []
+  const pastEvents = []
+  const sortedEventList = Object.values(eventsList).toSorted((a, b)=> Date.parse(a.startDate) - Date.parse(b.startDate))
+  sortedEventList.map((event)=> new Date(event.startDate) > new Date() ? upcomingEvents.push(event): pastEvents.push(event))
+
+
+  function normalizeTime(UTC){
+    const localDateTime = new Date(UTC)
+    return localDateTime.toLocaleTimeString('en-US')
+  }
+
+  function normalizeDate(UTC){
+    const localDateTime = new Date(UTC)
+    return localDateTime.toLocaleDateString("en-US")
+  }
+
+  function eventCardGenerator(events){
+    return events.map((event)=> (
+      <Link to={`${event.id}`} className="eventCard" key={event.id}>
+        <div className="topEventCard">
+          <div className="eventListImage">
+            <img src={event.previewImage ? event.previewImage : placeholder} alt="" />
+          </div>
+          <div className="eventListDetails">
+            <p>{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</p>
+            <h3>{event.name}</h3>
+            <p>{event.Venue.city}, {event.Venue.state}</p>
+          </div>
+        </div>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+      </Link>
+    ))
+  }
+
   return (
     <>
       <GroupEventHeader />
       <div className="small-page-container">
-        {Object.values(eventsList).map((event)=> (
-          <Link to={`${event.id}`} className="eventCard" key={event.id}>
-            <div className="topEventCard">
-              <div className="eventListImage">
-                {console.log(event)}
-                <img src={event.previewImage ? event.previewImage : placeholder} alt="" />
-              </div>
-              <div className="eventListDetails">
-                <p>{event.startDate}</p>
-                <h3>{event.name}</h3>
-                <p>{event.Venue.city}, {event.Venue.state}</p>
-              </div>
-            </div>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-          </Link>
-        ))}
+        <h2>Upcoming events</h2>
+        {eventCardGenerator(upcomingEvents)}
+        <h2>Past events</h2>
+        {eventCardGenerator(pastEvents)}
       </div>
     </>
   )

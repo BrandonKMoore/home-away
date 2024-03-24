@@ -30,12 +30,12 @@ export default function LandingPage () {
         </div>
         <div className="navOptions event">
           <img src={placeHolderImage} alt="" />
-          <Link><h3>Find an event</h3></Link>
+          <Link to='events'><h3>Find an event</h3></Link>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
         </div>
         <div className="navOptions newGroup">
           <img src={placeHolderImage} alt="" />
-          <Link to='groups/new'><h3>Start a new group</h3></Link>
+          {sessionUser ? <Link to='groups/new'><h3>Start a new group</h3></Link> : <Link className="disabled"><h3>Start a new group</h3></Link>}
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
         </div>
       </div>

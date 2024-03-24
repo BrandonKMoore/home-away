@@ -8,14 +8,20 @@
   border: solid 2px #E1B536;
 }
 
-.profile-dropdown > li > button {
+.profile-dropdown > li > a {
+  display: block;
   color: #E1B536;
   text-align: left;
   background-color: transparent;
   border: 0;
-  padding-top: 5px;
-  border-top: 1px rgb(82, 0, 0) solid;
+
+}
+
+.border {
+  display: block;
+  margin: 1px;
   width: 100%;
+  border-top: 1px rgb(82, 0, 0) solid;
 }
 
 .profile-dropdown > li {
@@ -46,7 +52,7 @@
   display: flex;
   gap: 20px;
   align-items: center;
-  
+
 }
 
 .navigation > .right > .link {

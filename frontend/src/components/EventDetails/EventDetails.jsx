@@ -57,8 +57,8 @@ export default function EventDetails(){
                 <div className='icon faint'>{LuClock5()}</div>
                 <div className='details'>
 
-                  <div className='time'><span className='faint small'>Start </span>{normalizeDate(event.startDate)} * {normalizeTime(event.startDate)}</div>
-                  <div className='time'><span className='faint small'>End </span>{normalizeDate(event.endDate)} * {normalizeTime(event.endDate)}</div>
+                  <div className='time'><span className='faint small'>Start </span>{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</div>
+                  <div className='time'><span className='faint small'>End </span>{normalizeDate(event.endDate)} • {normalizeTime(event.endDate)}</div>
                 </div>
               </div>
               <div className='event-cost'>

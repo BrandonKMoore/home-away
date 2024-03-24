@@ -35,8 +35,17 @@ h1 {
   align-items: center;
 }
 
-.navOptions > p{
+.navOptions > p {
   text-align: center;
+}
+
+.navOptions > a:hover:not(.disabled){
+  text-decoration: underline;
+}
+
+.newGroup > a.disabled {
+  color: lightgray;
+  cursor: auto;
 }
 
 #landing-page > a {

@@ -18,7 +18,6 @@ export default function GroupDetails(){
   let isAuthorized;
   let isMember;
 
-
   if (!Object.entries(groups).length === 1) {
     dispatch(getAllGroups())
   }
@@ -35,6 +34,16 @@ export default function GroupDetails(){
       dispatch(getAllGroups())
     }, [dispatch])
 
+    function normalizeTime(UTC){
+      const localDateTime = new Date(UTC)
+      return localDateTime.toLocaleTimeString('en-US')
+    }
+
+    function normalizeDate(UTC){
+      const localDateTime = new Date(UTC)
+      return localDateTime.toLocaleDateString("en-US")
+    }
+
     try{
       let group = Object.values(groups).find(group => group.id === Number(groupId))
       const upcomingEvents = []
@@ -43,9 +52,8 @@ export default function GroupDetails(){
         isAuthorized = group.User.id === sessionUser.id;
         isMember = group.Memberships.find((member) => member.id === sessionUser.id);
       }
-      let eventsByGroup = group.Events
-      eventsByGroup.map((event)=> new Date(eventsByGroup[0].startDate) > new Date() ? upcomingEvents.push(event): pastEvents.push(event))
-
+      const eventsByGroup = group.Events.toSorted((a, b)=> Date.parse(a.startDate) - Date.parse(b.startDate))
+      eventsByGroup.map((event)=> new Date(event.startDate) > new Date() ? upcomingEvents.push(event): pastEvents.push(event))
 
     return (
       <div className="small-page-container">
@@ -58,7 +66,7 @@ export default function GroupDetails(){
             <div className="group-quick-details-top">
               <h2>{group.name}</h2>
               <p>{group.city}, {group.state}</p>
-              <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} * {group.private ? 'private' : 'public'}</span>
+              <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} • {group.private ? 'private' : 'public'}</span>
               <p>Organized by {group.User.firstName} {group.User.lastName}</p>
             </div>
             {isMember || isAuthorized || !sessionUser ? null : <Link onClick={handleJoinButton}>Join this group</Link>}
@@ -80,22 +88,22 @@ export default function GroupDetails(){
             <h3>What we&apos;re about</h3>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
           </div>
-            {upcomingEvents.length > 1 ? <div className="upcomingEvents">
-            <h3>Upcoming Events ({group.numEvents})</h3>
-            {upcomingEvents.map((event)=> <div key={event.id} className='group-event-card'>
+          {upcomingEvents.length > 0 ? <div className="upcomingEvents">
+            <h3>Upcoming Events ({upcomingEvents.length})</h3>
+            {upcomingEvents.map((event)=> <div key={event.id} className='group-event-card'><Link to={`/events/${event.id}`}>
               <div className='top'>
                 <img src={event.EventImages.find((image)=> image.preview === true).url} alt="Event Preview Image" />
                 <div className='group-event-quickdetails'>
-                  <div className="event-start-date">{event.startDate}</div>
+                  <div className="event-start-date">{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</div>
                   <div className="event-title">{event.name}</div>
                   <div className="event-location">{event.Venue.city}, {event.Venue.state}</div>
                 </div>
               </div>
-              <div className="group-event-description">{event.description}</div>
-            </div>)}
-          </div> : <div><h3>No Upcoming Events</h3></div> }
-          {pastEvents.length > 1 ? <div className="pastEvents">
-            <h3>Past Events ({group.numEvents})</h3>
+            <div className="group-event-description">{event.description}</div>
+            </Link></div>)}</div> :
+          <div><h3>No Upcoming Events</h3></div>}
+          {pastEvents.length > 0 ? <div className="pastEvents">
+            <h3>Past Events ({pastEvents.length})</h3>
             {pastEvents.map((event)=> <div key={event.id} className='group-event-card'>
               <div className='top'>
                 <img src={event.EventImages.find((image)=> image.preview === true).url} alt="Event Preview Image" />

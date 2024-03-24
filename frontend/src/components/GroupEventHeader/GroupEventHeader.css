@@ -8,6 +8,11 @@
 }
 
 #group-event-nav > .active {
+  color: teal;
   text-decoration: underline;
   cursor: default;
+}
+
+#group-event-nav > a:not(.active){
+  color: gray;
 }

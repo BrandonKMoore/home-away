@@ -3,6 +3,7 @@ import GroupEventHeader from "../GroupEventHeader";
 import { getAllGroups } from "../../store/groups";
 import { Link } from "react-router-dom";
 import placeholder from '/favicon.ico'
+import { BsDot } from "react-icons/bs";
 import { useEffect } from "react"
 import './Groups.css'
 
@@ -29,7 +30,7 @@ export default function Groups (){
             <h3>{group.name}</h3>
             <p>{group.city}, {group.state}</p>
             <p>{group.about}</p>
-            <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} * {group.private ? 'private' : 'public'}</span>
+            <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} • {group.private ? 'private' : 'public'}</span>
           </div>
         </Link>
       ))}

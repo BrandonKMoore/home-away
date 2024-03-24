@@ -82,6 +82,21 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    // visibility: {
+    //   type: DataTypes.BOOLEAN,
+    //   allowNull: false,
+    //   defaultValue: false,
+    //   validate: {
+    //     notNull: {
+    //       msg: 'Private must be a boolean'
+    //     },
+    //     isBoolean(val){
+    //       if(typeof val !== typeof true){
+    //         throw new Error('Private must be a boolean')
+    //       }
+    //     }
+    //   }
+    // },
     capacity: {
       type: DataTypes.INTEGER,
       allowNull: false,

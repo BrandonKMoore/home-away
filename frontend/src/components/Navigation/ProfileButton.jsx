@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { FaCircleUser } from "react-icons/fa6";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function ProfileButton({ user }) {
   const navigate = useNavigate();
@@ -47,9 +47,11 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
+        <span className='border'></span>
+        <li><Link to="/groups" onClick={toggleMenu}>View groups</Link></li>
+        <li><Link to="/events" onClick={toggleMenu}>View events</Link></li>
+        <span className='border'></span>
+        <li><Link  onClick={logout}>Log Out</Link></li>
       </ul>
     </div>
   );
