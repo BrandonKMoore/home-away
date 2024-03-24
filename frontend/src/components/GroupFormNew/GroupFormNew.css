@@ -8,3 +8,8 @@
   display: block;
   font-size: .7em;
 }
+
+.about-list > li {
+  list-style: decimal;
+  list-style-position: inside;
+}

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useModal } from '../../context/Modal'
 import { useDispatch } from "react-redux";
 import { deleteCurrGroups } from "../../store/groups";
+import './DeleteModal.css'
 
 export default function DeleteModal({group}){
   const navigate = useNavigate()
@@ -19,8 +20,8 @@ export default function DeleteModal({group}){
     <div>
       <h3>Confirm Delete</h3>
       <p>Are you sure you want to remove this group?</p>
-      <button onClick={handleSubmit}>Yes(Delete Group)</button>
-      <button onClick={closeModal}>No(Keep Group)</button>
+      <button className='delete-yes' onClick={handleSubmit}>Yes(Delete Group)</button>
+      <button className='delete-no' onClick={closeModal}>No(Keep Group)</button>
     </div>
   )
 }

@@ -35,7 +35,7 @@ export default function GroupFormEdit(){
 
     if(!location || location.length < 3 || !location.includes(',')) loadedErrors.location = "Location is required"
     if(!name || name.length < 3 ) loadedErrors.name = "Name is required"
-    if(!about || about.length < 30) loadedErrors.about = "Description must be at least 30 characters long"
+    if(!about || about.length < 50) loadedErrors.about = "Description must be at least 50 characters long"
     if(!type) loadedErrors.type = "Group Type is required"
     if(isPrivate || isPrivate !== false) loadedErrors.isPrivate = "Visibility Type is required"
     // if(!imageUrl.endsWith('.png') && !imageUrl.endsWith('.jpeg') && !imageUrl.endsWith('.jpg')) loadedErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
@@ -71,7 +71,7 @@ export default function GroupFormEdit(){
 
   return (
     <div className='small-page-container'>
-      <span>BECOME AN ORGANIZER</span>
+      <span>Update your Group</span>
       <h3>We&apos;ll walk you through a few steps to build your local community</h3>
       <form onSubmit={handleSubmit}>
         <div className="line-break"></div>
@@ -105,7 +105,7 @@ export default function GroupFormEdit(){
         <textarea
           type="text-area"
           cols={50}
-          placeholder="Please write at least 30 characters"
+          placeholder="Please write at least 50 characters"
           value={about}
           onChange={(e)=> setAbout(e.target.value)}
         />

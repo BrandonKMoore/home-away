@@ -4,6 +4,7 @@ import './EventDetails.css'
 import { useEffect } from 'react'
 import { getAllEvents } from '../../store/events'
 import imagePlaceHolder from '/image.jpeg'
+import OpenModalButton from '../OpenModalButton'
 import { LuClock5 } from "react-icons/lu";
 import { CiDollar } from "react-icons/ci";
 import { FaMapPin } from "react-icons/fa";
@@ -12,6 +13,7 @@ export default function EventDetails(){
   const { eventId } = useParams()
   const dispatch = useDispatch()
   const events = useSelector(state => state.events)
+  const sessionUser = useSelector(state => state.session.user);
 
   useEffect(()=>{
     if(Object.entries(events).length < 2) dispatch(getAllEvents())
@@ -46,11 +48,11 @@ export default function EventDetails(){
           </div>
           <div className="event-hero-right">
             <div className="event-group-info">
-            {!event.Group.GroupImages.length ? <img src={imagePlaceHolder} alt="" /> : <img src={event.Group.GroupImages[0].url} alt="" />}
-            <div>
-              <div className='groupTitle'>{event.Group.name}</div>
-              <div className='faint smallest'>{event.Group.private ? 'Private' : 'Public'}</div>
-            </div>
+              {!event.Group.GroupImages.length ? <img src={imagePlaceHolder} alt="" /> : <img src={event.Group.GroupImages[0].url} alt="" />}
+              <div>
+                <div className='groupTitle'>{event.Group.name}</div>
+                <div className='faint smallest'>{event.Group.private ? 'Private' : 'Public'}</div>
+              </div>
             </div>
             <div className="event-quick-details">
               <div className='event-time'>
@@ -63,11 +65,19 @@ export default function EventDetails(){
               </div>
               <div className='event-cost'>
                 <div className='icon faint'>{CiDollar()} </div>
-                <div className='price'>${event.price ? event.price : <span className='faint small'>Free</span>}</div>
+                <div className='price'>{event.price ? `$${event.price}` : <span className='faint small'>Free</span>}</div>
               </div>
               <div className='event-attend-type'>
-                <div className='icon faint'>{FaMapPin()}</div>
-                <div className='type faint small'>{} {event.type}</div>
+                <div>
+                  <div className='icon faint'>{FaMapPin()}</div>
+                  <div className='type faint small'>{} {event.type}</div>
+                </div>
+                { sessionUser ?
+                  <div className='auth-manage-buttons'>
+                    <Link to={`edit`}>Update</Link>
+                    <OpenModalButton buttonText="Delete" /*modalComponent={<DeleteModal event={event}/>}*/ />
+                  </div> : null
+                }
               </div>
             </div>
           </div>
