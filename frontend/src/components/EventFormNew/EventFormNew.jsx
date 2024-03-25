@@ -40,7 +40,6 @@ export default function EventFormNew() {
     setErrors(loadedErrors)
 
     if(!Object.entries(loadedErrors).length) {
-      alert('submitted successfully')
       const data = {
         groupId,
         name,

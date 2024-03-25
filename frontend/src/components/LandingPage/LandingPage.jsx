@@ -19,7 +19,7 @@ export default function LandingPage () {
         <img src={lpvideochat} alt="" />
       </div>
       <div id='mid'>
-        <h2>How Meetup works</h2>
+        <h2>How SocialEyes works</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
       </div>
       <div id='bottom'>
@@ -39,7 +39,7 @@ export default function LandingPage () {
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
         </div>
       </div>
-      {sessionUser ? null : <OpenModalButton buttonText="Join Meetup" modalComponent={<SignupFormModal />} />}
+      {sessionUser ? null : <OpenModalButton buttonText="Join SocialEyes" modalComponent={<SignupFormModal />} />}
     </div>
   )
 }

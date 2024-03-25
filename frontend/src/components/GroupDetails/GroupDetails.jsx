@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-// import { useEffect } from "react"
+import { useEffect } from "react"
 
 import { getAllGroups } from '../../store/groups'
 import OpenModalButton from '../OpenModalButton'
 import DeleteGroupModal from '../DeleteGroupModal'
 
-import imagePlaceHolder from '/image.jpeg'
+import imagePlaceHolder from '/example-pic.jpg'
 import './GroupDetails.css'
 
 
@@ -18,10 +18,10 @@ export default function GroupDetails(){
   let isAuthorized;
   let isMember;
 
-  if (Object.entries(groups).length < 1) {
-    dispatch(getAllGroups())
-    return null
-  }
+  // if (Object.entries(groups).length < 1) {
+  //   dispatch(getAllGroups())
+  //   return null
+  // }
 
   function handleJoinButton(){
     if(!sessionUser) {
@@ -31,9 +31,9 @@ export default function GroupDetails(){
     }
   }
 
-  // useEffect(()=> {
-  //     dispatch(getAllGroups())
-  //   }, [dispatch])
+  useEffect(()=> {
+      dispatch(getAllGroups())
+    }, [dispatch])
 
     function normalizeTime(UTC){
       const localDateTime = new Date(UTC)
@@ -61,7 +61,7 @@ export default function GroupDetails(){
         <Link to="/groups">{`< Groups`}</Link>
         <div className='group-details-hero'>
           <div className='group-details-image-container'>
-          {group.GroupImages.length ? <img src={imagePlaceHolder} alt="" /> : <img src={group.GroupImages[0].url} alt="" />}
+          {!group.GroupImages.length ? <img src={imagePlaceHolder} alt="" /> : <img src={group.GroupImages[0].url} alt="" />}
           </div>
           <div className="group-quick-details">
             <div className="group-quick-details-top">

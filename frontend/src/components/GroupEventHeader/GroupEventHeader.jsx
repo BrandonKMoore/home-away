@@ -16,7 +16,7 @@ export default function GroupEventHeader(){
         <NavLink to='/events'><h2>Events</h2></NavLink>
         <NavLink to='/groups'><h2>Groups</h2></NavLink>
       </nav>
-      <span>{isEvent} in Meetup</span>
+      <span>{isEvent} in SocialEyes</span>
       <Outlet />
     </div>
   )

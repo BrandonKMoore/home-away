@@ -7,6 +7,10 @@
   color: inherit;
 }
 
+body {
+  background-color: black;
+}
+
 a {
   cursor: pointer;
 }

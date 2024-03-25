@@ -23,7 +23,7 @@ export default function Groups (){
       {Object.values(groupsList).map((group)=> (
         <Link className="groupCard" to={String(group.id)} key={group.id}>
           <div className="groupListImage">
-            <img src={placeholder} alt="" />
+            {group.GroupImages.length ? <img src={group.GroupImages[0].url} alt="" /> : <img src={placeholder} alt="" />}
           </div>
           <div className="groupListDetails">
             <h3>{group.name}</h3>
