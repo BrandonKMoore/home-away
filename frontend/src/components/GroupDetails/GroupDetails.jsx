@@ -50,7 +50,6 @@ export default function GroupDetails(){
     }
 
     function displayDefaultImg(e){
-      console.log(e.target.src, examplePic)
       e.target.src = examplePic
     }
 
@@ -123,7 +122,7 @@ export default function GroupDetails(){
               </div>
             <div className="group-event-description">{event.description}</div>
             </Link></div>)}</div> :
-          <div><h3>No Upcoming Events</h3></div>}
+          <div><h3>No Past Events</h3></div>}
         </div>
       </div>
     )

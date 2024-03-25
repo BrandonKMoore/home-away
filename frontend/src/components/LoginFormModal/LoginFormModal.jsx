@@ -41,7 +41,7 @@ function LoginFormModal() {
     <>
       <h1>Log In</h1>
       {Object.values(errors).length ? <span>The provided credentials were invalid</span> : null}
-      <form onSubmit={handleSubmit}>
+      <form className ='modal-form' onSubmit={handleSubmit}>
         <label>
           <input
             type="text"

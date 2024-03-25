@@ -45,7 +45,7 @@
   align-items: center;
   background-color: black;
   height: 3em;
-  border-bottom: solid 1px red;
+  border-bottom: solid 2px rgb(82, 0, 0);
 }
 
 .navigation > .right {

@@ -78,7 +78,7 @@ export default function GroupFormNew(){
         <p>SocialEyes groups meet locally, in person and online. We&apos;ll connect you with people in your area, and more can join you online</p>
         <input
           type="text"
-          placeholder="City, state"
+          placeholder="City, State"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />

@@ -28,6 +28,7 @@ body {
 
 a {
   cursor: pointer;
+  text-decoration: none;
 }
 
 input {
@@ -87,6 +88,7 @@ p {
 .breadcrumb {
   font-size: .7em;
   width: 100%;
+  text-decoration: none;
 }
 
 .breadcrumb > span {

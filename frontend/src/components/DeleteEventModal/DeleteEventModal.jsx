@@ -8,8 +8,6 @@ export default function DeleteEventModal({event}){
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-
-  console.log(event)
   const { closeModal } = useModal();
 
   function handleSubmit(){

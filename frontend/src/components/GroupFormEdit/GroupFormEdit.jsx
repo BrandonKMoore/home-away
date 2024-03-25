@@ -18,26 +18,17 @@ export default function GroupFormEdit(){
   const [isPrivate, setIsPrivate] = useState(group.private)
   const [imageUrl, setImageUrl] = useState(group.previewImage)
 
-  // function stateReset(){
-  //   setLocation('')
-  //   setName('')
-  //   setAbout('')
-  //   setType('')
-  //   setIsPrivate('')
-  //   setImageUrl('')
-  // }
-
 
   const handleSubmit = async(e) =>  {
     e.preventDefault()
-    const loadedErrors = {}
+    let loadedErrors = {}
 
 
     if(!location || location.length < 3 || !location.includes(',')) loadedErrors.location = "Location is required"
     if(!name || name.length < 3 ) loadedErrors.name = "Name is required"
     if(!about || about.length < 50) loadedErrors.about = "Description must be at least 50 characters long"
     if(!type) loadedErrors.type = "Group Type is required"
-    if(isPrivate || isPrivate !== false) loadedErrors.isPrivate = "Visibility Type is required"
+    if(isPrivate === '') loadedErrors.isPrivate = "Visibility Type is required"
     // if(!imageUrl.endsWith('.png') && !imageUrl.endsWith('.jpeg') && !imageUrl.endsWith('.jpg')) loadedErrors.imageUrl = "Image URL must end in .png, .jpg, or .jpeg"
 
     setErrors(loadedErrors);
@@ -58,7 +49,6 @@ export default function GroupFormEdit(){
 
       await dispatch(editCurrGroup(data))
       await navigate(`/groups/${group.id}`)
-      // stateReset()
     }
   }
 
@@ -132,7 +122,7 @@ export default function GroupFormEdit(){
             name="group-avail"
             id="group-avail"
             value={isPrivate}
-            onChange={(e)=> setIsPrivate(e.target.value)}
+            onSelect={(e)=> setIsPrivate(e.target.value)}
             >
             <option value='' disabled={true}>(select one)</option>
             <option value={false}>Public</option>

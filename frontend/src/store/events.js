@@ -48,7 +48,6 @@ export const getEventById = (id) => async dispatch => {
 }
 
 export const deleteCurrEvent = (event) => async dispatch => {
-  console.log()
   const response = await csrfFetch(`/api/events/${event.id}`, {
     method: "DELETE"
   });

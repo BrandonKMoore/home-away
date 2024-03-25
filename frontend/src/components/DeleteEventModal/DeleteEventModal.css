@@ -1,7 +1,32 @@
+#modal-content > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 90%
+}
+
+#modal-content > div > * {
+  text-align: center;
+}
+
+#modal-content {
+  border: 3px solid black;
+}
+
+#modal-content > div > h3 {
+  font-weight: bold;
+}
+
 .delete-yes {
-  background-color: red;
+  border: 1px solid #E1B536;
+  background-color: rgb(82, 0, 0);
+  box-shadow: 2px 2px black;
+  padding: 5px;
 }
 
 .delete-no {
+  border: 1px solid #E1B536;
   background-color: darkgray;
+  box-shadow: 2px 2px black;
+  padding: 5px;
 }

@@ -34,7 +34,6 @@ export default function Events (){
   }
 
   function displayDefaultImg(e){
-    console.log(e.target.src)
     e.target.src=examplePic
   }
 
@@ -50,7 +49,7 @@ export default function Events (){
           <div className="eventListDetails">
             <span className="event-startDate">{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</span>
             <h3>{event.name}</h3>
-            <h4>{event.Venue ? event.Venue.city : event.Group.city}, {event.Venue ? event.Venue.state : event.Group.state}</h4>
+            <h4 className="faint">{event.Venue ? event.Venue.city : event.Group.city}, {event.Venue ? event.Venue.state : event.Group.state}</h4>
           </div>
         </div>
         <p>{event.description}</p>
