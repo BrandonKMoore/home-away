@@ -369,18 +369,20 @@ router.get('/:groupId/events', async(req, res, next)=>{
 
 // Create an Event for a Group specified by its id
 router.post('/:groupId/events', requireAuth, async(req, res, next)=>{
-  const newEvent = {}
   const groupId = req.params.groupId
+  const { name, type, isPrivate, price, startDate, endDate, description, imageUrl } = req.body
+  const newEvent = { name, type, price, startDate, endDate, description }
 
-  for (let key in req.body){
-    newEvent[key] = req.body[key]
-  }
 
-  if (!await Venue.findByPk(req.body.venueId)){
-    const err = new Error("Venue couldn't be found")
-    err.status = 404
-    return next(err)
-  }
+  // for (let key in req.body){
+  //   newEvent[key] = req.body[key]
+  // }
+
+  // if (!await Venue.findByPk(req.body.venueId)){
+  //   const err = new Error("Venue couldn't be found")
+  //   err.status = 404
+  //   return next(err)
+  // }
 
   const group = await Group.findByPk(req.params.groupId, {
     include: [{ model: Membership }],
@@ -410,6 +412,12 @@ router.post('/:groupId/events', requireAuth, async(req, res, next)=>{
   try{
     const createdEvent = await group.createEvent(newEvent)
     newEvent.id = createdEvent.id
+
+    await createdEvent.createEventImage({
+      eventId: createdEvent.id,
+      preview: true,
+      url: imageUrl
+    })
 
   } catch (err){
     return next(err)

@@ -56,3 +56,9 @@ h3 {
 .small-symbol {
   font-size: 0.8em
 }
+
+.line-break{
+  border-bottom: 2px solid grey;
+  width: 100%;
+  margin: 10px 0;
+}

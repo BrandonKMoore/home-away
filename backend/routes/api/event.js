@@ -46,7 +46,7 @@ router.get('/', validateEventsQuery, async(req, res, next)=>{
 
   let allEvents = await Event.findAll({
     include: [
-      {model: Group, attributes: ['id', 'name', 'private'],
+      {model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
         include: [
           {model: User, attributes: ['id', 'firstName', 'lastName']},
           {model: GroupImage}

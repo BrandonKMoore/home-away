@@ -49,8 +49,6 @@ function SignupFormModal() {
     isEmpty.length || username.length < 4 || password.length < 6 ? setDisabledSubmitBtn(true) : setDisabledSubmitBtn(false)
   }, [firstName, lastName, email, username, password, confirmPassword])
 
-
-  console.log(errors)
   return (
     <>
       <h1>Sign Up</h1>

@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
   Event.init({
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true,
     },
     groupId: {
       type: DataTypes.INTEGER,
@@ -50,10 +50,10 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: "Name must be at least 5 characters"
         },
-        len: {
-          args: [5,50],
-          msg: "Name must be at least 5 characters"
-        }
+        // len: {
+        //   args: [5,50],
+        //   msg: "Name must be at least 5 characters"
+        // }
       }
     },
     description: {
@@ -77,8 +77,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Type must be Online or In person"
         },
         isIn: {
-          args: [['Online', 'In person']],
-          msg: "Type must be Online or In person"
+          args: [['Online', 'In-Person']],
+          msg: "Type must be Online or In-Person"
         }
       }
     },
@@ -99,11 +99,11 @@ module.exports = (sequelize, DataTypes) => {
     // },
     capacity: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       validate: {
-        notNull: {
-          msg: "Capacity must be an integer"
-        },
+        // notNull: {
+        //   msg: "Capacity must be an integer"
+        // },
         isInt: {
           msg: "Capacity must be an integer"
         }
@@ -117,7 +117,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Price is invalid"
         },
         min: {
-          args: 0.01,
+          args: -0.01,
           msg: "Price is invalid"
         }
       }

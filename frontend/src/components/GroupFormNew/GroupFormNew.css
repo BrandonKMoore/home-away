@@ -1,8 +1,3 @@
-.line-break{
-  border-bottom: 2px solid grey;
-  width: 100%;
-}
-
 .new-group-error {
   color: red;
   display: block;

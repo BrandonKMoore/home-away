@@ -51,19 +51,19 @@ export const getAllGroups = () => async dispatch => {
     method: "GET"
   });
   const data = await response.json();
-  dispatch(loadAllGroups(data.groups))
+  const groupObj = {}
+  data.groups.forEach(group => (groupObj[group.id] = group))
+  dispatch(loadAllGroups(groupObj))
   return response;
 }
 
 // Edit Current Group
 export const editCurrGroup = (groupData) => async dispatch => {
-  console.log(groupData)
   const response = await csrfFetch(`/api/groups/${groupData.id}`, {
     method: "PUT",
     body: JSON.stringify(groupData)
   });
   const data = await response.json();
-  console.log(groupData)
   // groupData.id = data.id
   dispatch(editGroup(groupData))
   return data;
@@ -79,22 +79,25 @@ export const deleteCurrGroups = (groupData) => async dispatch => {
 }
 
 let initialState = {};
-let allGroupsObj = {}
+// let allGroupsObj = {}
 
 function groupsReducer(state = initialState, action){
   switch (action.type){
     case GET_ALL_GROUPS:
-      allGroupsObj = {}
-      action.groups.forEach(group => (allGroupsObj[group.id] = group))
-      return allGroupsObj
+      // allGroupsObj = {}
+      // action.groups.forEach(group => (allGroupsObj[group.id] = group))
+      // return allGroupsObj
+      return {...action.groups}
     case EDIT_GROUP:
-      return {}
+      return {...state}
       case DELETE_GROUP:
         initialState = {...state}
         delete initialState[action.group.id]
       return {...initialState}
     case CREATE_NEW_GROUP:
-      return {...state, ...action.groupData}
+      initialState = {}
+      initialState[action.groupData.id] = {...action.groupData}
+      return {}
     default:
       return state;
   }

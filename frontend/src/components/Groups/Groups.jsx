@@ -3,7 +3,6 @@ import GroupEventHeader from "../GroupEventHeader";
 import { getAllGroups } from "../../store/groups";
 import { Link } from "react-router-dom";
 import placeholder from '/favicon.ico'
-import { BsDot } from "react-icons/bs";
 import { useEffect } from "react"
 import './Groups.css'
 

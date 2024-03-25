@@ -8,6 +8,7 @@ import OpenModalButton from '../OpenModalButton'
 import { LuClock5 } from "react-icons/lu";
 import { CiDollar } from "react-icons/ci";
 import { FaMapPin } from "react-icons/fa";
+import DeleteEventModal from '../DeleteEventModal'
 
 export default function EventDetails(){
   const { eventId } = useParams()
@@ -17,9 +18,10 @@ export default function EventDetails(){
 
   useEffect(()=>{
     if(Object.entries(events).length < 2) dispatch(getAllEvents())
-  })
 
-  if(!events[eventId]) return <h1>Could not find event</h1>
+  }, [events, dispatch])
+
+  if(!events[eventId]) return null
   const event = events[eventId]
 
   function normalizeTime(UTC){
@@ -33,7 +35,14 @@ export default function EventDetails(){
     return localDateTime.toLocaleDateString("en-US")
   }
 
-  console.log(events[eventId])
+  function handleUpdateButton(){
+    if(!sessionUser) {
+      alert("You have to be signed in join a group")
+    } else {
+      alert("Feature Coming Soon...")
+    }
+  }
+
   return (
     <div className="small-page-container">
       <div>
@@ -74,8 +83,8 @@ export default function EventDetails(){
                 </div>
                 { sessionUser ?
                   <div className='auth-manage-buttons'>
-                    <Link to={`edit`}>Update</Link>
-                    <OpenModalButton buttonText="Delete" /*modalComponent={<DeleteModal event={event}/>}*/ />
+                    <Link onClick={handleUpdateButton}>Update</Link>
+                    <OpenModalButton buttonText="Delete" modalComponent={<DeleteEventModal event={event}/>} />
                   </div> : null
                 }
               </div>

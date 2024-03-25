@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom"
 import { useModal } from '../../context/Modal'
 import { useDispatch } from "react-redux";
-import { deleteCurrGroups } from "../../store/groups";
-import './DeleteModal.css'
+import { deleteCurrEvent } from "../../store/events";
+import './DeleteEventModal.css'
 
-export default function DeleteModal({group}){
+export default function DeleteEventModal({event}){
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { closeModal } = useModal();
 
   function handleSubmit(){
-    dispatch(deleteCurrGroups(group))
+    dispatch(deleteCurrEvent(event))
     closeModal()
-    navigate('/groups')
+    navigate('/events')
   }
 
 
