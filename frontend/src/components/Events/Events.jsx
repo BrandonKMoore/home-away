@@ -27,35 +27,42 @@ export default function Events (){
 
   function normalizeDate(UTC){
     const localDateTime = new Date(UTC)
-    return localDateTime.toLocaleDateString("en-US")
+    const year = localDateTime.getFullYear()
+    const month = localDateTime.getMonth()
+    const date = localDateTime.getDate()
+    return `${year}-${month}-${date}`
   }
 
   function eventCardGenerator(events){
-    return events.map((event)=> (
+    return events.map((event)=> (<>
+      <div className="line-break"></div>
       <Link to={`${event.id}`} className="eventCard" key={event.id}>
         <div className="topEventCard">
           <div className="eventListImage">
             <img src={event.previewImage ? event.previewImage : placeholder} alt="" />
           </div>
           <div className="eventListDetails">
-            <p>{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</p>
+            <span className="event-startDate">{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</span>
             <h3>{event.name}</h3>
-            <p>{event.Venue ? event.Venue.city : event.Group.city}, {event.Venue ? event.Venue.state : event.Group.state}</p>
+            <h4>{event.Venue ? event.Venue.city : event.Group.city}, {event.Venue ? event.Venue.state : event.Group.state}</h4>
           </div>
         </div>
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+        <p>{event.description}</p>
       </Link>
+    </>
     ))
   }
 
   return (
     <>
       <GroupEventHeader />
-      <div className="small-page-container">
-        <h2>Upcoming events</h2>
-        {eventCardGenerator(upcomingEvents)}
-        <h2>Past events</h2>
-        {eventCardGenerator(pastEvents)}
+      <div className="small-page-container" id="event-page">
+        <div className="line-break"></div>
+          <h2>Upcoming events</h2>
+          {eventCardGenerator(upcomingEvents)}
+          <div className="line-break"></div>
+          <h2>Past events</h2>
+          {eventCardGenerator(pastEvents)}
       </div>
     </>
   )

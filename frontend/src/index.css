@@ -1,5 +1,20 @@
 /* TODO: Add sitewide styles */
+.pt-sans-regular {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pt-sans-bold {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
 * {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -20,31 +35,33 @@ input {
 }
 
 h1 {
-  font-size: 1.7em;
+  font-size: 1.9em;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 
 h2 {
-  font-size: 1.1em
+  font-size: 1.3em;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 
 h3 {
-  font-size: .8em;
+  font-size: 1.0em;
+}
+
+h4 {
+  font-size: 0.8em;
+}
+
+p {
+  font-size: .7em;
 }
 
 .faint {
   color: gray;
-}
-
-.smaller {
-  font-size: .8em;
-}
-
-.smallest {
-  font-size: .7em;
-}
-
-.small {
-  font-size: .8em
 }
 
 .small-page-container {
@@ -52,7 +69,7 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 35px 15%;
+  padding: 0 15%;
   margin: 0px auto;
   max-width: 700px
 }
@@ -62,7 +79,7 @@ h3 {
 }
 
 .line-break{
-  border-bottom: 2px solid grey;
+  border-bottom: 1px solid gray;
   width: 100%;
   margin: 10px 0;
 }

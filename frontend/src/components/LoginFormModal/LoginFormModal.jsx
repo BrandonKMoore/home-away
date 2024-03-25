@@ -33,7 +33,7 @@ function LoginFormModal() {
 
 
   const signInDemo = () =>{
-    return dispatch(sessionActions.login({ credential: "tristin.dougherty@user.io", password: "TDougherty2!" }))
+    return dispatch(sessionActions.login({ credential: "d.user24", password: "DemolitionMan24!" }))
     .then(closeModal)
   }
 

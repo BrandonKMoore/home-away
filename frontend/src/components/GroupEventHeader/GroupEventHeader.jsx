@@ -11,13 +11,15 @@ export default function GroupEventHeader(){
   },[isEvent])
 
   return (
-    <div className="small-page-container">
+    <div className="small-page-container" id="event-group-header">
       <nav id="group-event-nav">
         <NavLink to='/events'><h2>Events</h2></NavLink>
         <NavLink to='/groups'><h2>Groups</h2></NavLink>
       </nav>
-      <span>{isEvent} in SocialEyes</span>
-      <Outlet />
+      <div>
+        <h4>{isEvent} in SocialEyes</h4>
+        <Outlet />
+      </div>
     </div>
   )
 }

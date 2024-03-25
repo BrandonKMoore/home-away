@@ -19,19 +19,23 @@ export default function Groups (){
   return (
     <>
     <GroupEventHeader />
-    <div className="small-page-container">
-      {Object.values(groupsList).map((group)=> (
+    <div className="small-page-container group-page">
+      {Object.values(groupsList).map((group)=> (<>
+        <div className="line-break"></div>
         <Link className="groupCard" to={String(group.id)} key={group.id}>
           <div className="groupListImage">
             {group.GroupImages.length ? <img src={group.GroupImages[0].url} alt="" /> : <img src={placeholder} alt="" />}
           </div>
           <div className="groupListDetails">
-            <h3>{group.name}</h3>
-            <p>{group.city}, {group.state}</p>
+            <div>
+              <h3>{group.name}</h3>
+              <p>{group.city}, {group.state}</p>
+            </div>
             <p>{group.about}</p>
             <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} • {group.private ? 'private' : 'public'}</span>
           </div>
         </Link>
+      </>
       ))}
     </div>
     </>

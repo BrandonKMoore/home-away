@@ -1,19 +1,29 @@
+#event-page {
+  padding-bottom: 100px;
+}
+
 .eventCard {
-  border-top: 1px solid grey;
   padding: 10px ;
-}
-
-.eventListImage {
-  height: 200px;
-  width: 200px;
-}
-
-.eventListImage > img {
-  height: 200px;
-  width: 200px;
+  width: 100%;
 }
 
 .topEventCard {
   display: flex;
   gap: 25px
+}
+
+.eventListImage > img {
+  height: 150px;
+  width: 250px;
+}
+
+.eventListDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.eventListDetails > span {
+  color: rgb(82, 0, 0);
+  font-size: .7em;
 }

@@ -6,6 +6,7 @@
   color: #E1B536;
   background-color: black;
   border: solid 2px #E1B536;
+  min-width: 150px;
 }
 
 .profile-dropdown > li > a {
@@ -14,7 +15,6 @@
   text-align: left;
   background-color: transparent;
   border: 0;
-
 }
 
 .border {

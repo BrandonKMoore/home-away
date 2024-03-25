@@ -3,12 +3,27 @@
   gap: 10px;
 }
 
+#event-group-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 75px;
+  padding-top: 40px;
+  padding-bottom: 10px;
+}
+
+#event-group-header h4 {
+  color: gray;
+  display: block;
+
+}
+
 #group-event-nav > a:hover {
   text-decoration: underline;
 }
 
 #group-event-nav > .active {
-  color: teal;
+  color: rgb(82, 0, 0);
   text-decoration: underline;
   cursor: default;
 }
