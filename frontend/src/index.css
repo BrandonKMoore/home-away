@@ -83,3 +83,13 @@ p {
   width: 100%;
   margin: 10px 0;
 }
+
+.breadcrumb {
+  font-size: .7em;
+  width: 100%;
+}
+
+.breadcrumb > span {
+  text-decoration: underline;
+  color: blue;
+}

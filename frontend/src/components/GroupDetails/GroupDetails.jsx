@@ -7,6 +7,7 @@ import OpenModalButton from '../OpenModalButton'
 import DeleteGroupModal from '../DeleteGroupModal'
 
 import imagePlaceHolder from '/example-pic.jpg'
+import examplePic from "/example-pic.jpg"
 import './GroupDetails.css'
 
 
@@ -42,10 +43,18 @@ export default function GroupDetails(){
 
     function normalizeDate(UTC){
       const localDateTime = new Date(UTC)
-      return localDateTime.toLocaleDateString("en-US")
+      const year = localDateTime.getFullYear()
+      const month = localDateTime.getMonth()
+      const date = localDateTime.getDate()
+      return `${year}-${month}-${date}`
     }
 
-    // try{
+    function displayDefaultImg(e){
+      console.log(e.target.src, examplePic)
+      e.target.src = examplePic
+    }
+
+    try{
       let group = Object.values(groups).find(group => group.id === Number(groupId))
       const upcomingEvents = []
       const pastEvents = []
@@ -57,18 +66,18 @@ export default function GroupDetails(){
       eventsByGroup.map((event)=> new Date(event.startDate) > new Date() ? upcomingEvents.push(event): pastEvents.push(event))
 
     return (
-      <div className="small-page-container">
-        <Link to="/groups">{`< Groups`}</Link>
+      <div className="small-page-container" id='group-details-page'>
+        <Link className='breadcrumb' to="/groups">{'< '}<span>{`Groups`}</span></Link>
         <div className='group-details-hero'>
           <div className='group-details-image-container'>
-          {!group.GroupImages.length ? <img src={imagePlaceHolder} alt="" /> : <img src={group.GroupImages[0].url} alt="" />}
+          {!group.GroupImages.length ? <img src={examplePic} alt="" /> : <img onError={displayDefaultImg} src={group.GroupImages[0].url} alt="" />}
           </div>
           <div className="group-quick-details">
             <div className="group-quick-details-top">
               <h2>{group.name}</h2>
-              <p>{group.city}, {group.state}</p>
-              <span>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} • {group.private ? 'private' : 'public'}</span>
-              <p>Organized by {group.User.firstName} {group.User.lastName}</p>
+              <p className='faint'>{group.city}, {group.state}</p>
+              <span className='faint'>{group.numEvents} {group.numEvents === 1 ? 'event' : 'events'} • {group.private ? 'private' : 'public'}</span>
+              <p className='faint'>Organized by {group.User.firstName} {group.User.lastName}</p>
             </div>
             {isMember || isAuthorized || !sessionUser ? null : <Link onClick={handleJoinButton}>Join this group</Link>}
             {isAuthorized ? <div className='group-organizer-options'>
@@ -76,14 +85,12 @@ export default function GroupDetails(){
               <Link to={`edit`}>Update</Link>
               <OpenModalButton buttonText="Delete" modalComponent={<DeleteGroupModal group={group}/>} />
             </div> : null}
-
-
           </div>
         </div>
         <div className="group-details-body">
           <div className='header'>
             <h3>Organizer</h3>
-            <p>{group.User.firstName} {group.User.lastName}</p>
+            <p className='faint'>{group.User.firstName} {group.User.lastName}</p>
           </div>
           <div className="about">
             <h3>What we&apos;re about</h3>
@@ -93,11 +100,11 @@ export default function GroupDetails(){
             <h3>Upcoming Events ({upcomingEvents.length})</h3>
             {upcomingEvents.map((event)=> <div key={event.id} className='group-event-card'><Link to={`/events/${event.id}`}>
               <div className='top'>
-                <img src={event.EventImages.find((image)=> image.preview === true).url || imagePlaceHolder} alt="Event Preview Image" />
-                <div className='group-event-quickdetails'>
+                <img onError={displayDefaultImg} src={event.EventImages.find((image)=> image.preview === true).url || examplePic} alt="Event Preview Image" />
+                <div className='group-event-quick-details'>
                   <div className="event-start-date">{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</div>
-                  <div className="event-title">{event.name}</div>
-                  <div className="event-location">{event.Venue ? event.Venue.city : group.city}, {event.Venue ? event.Venue.state : group.state}</div>
+                  <h4 className="event-title">{event.name}</h4>
+                  <p className="event-location faint">{event.Venue ? event.Venue.city : group.city}, {event.Venue ? event.Venue.state : group.state}</p>
                 </div>
               </div>
             <div className="group-event-description">{event.description}</div>
@@ -105,22 +112,22 @@ export default function GroupDetails(){
           <div><h3>No Upcoming Events</h3></div>}
           {pastEvents.length > 0 ? <div className="pastEvents">
             <h3>Past Events ({pastEvents.length})</h3>
-            {pastEvents.map((event)=> <div key={event.id} className='group-event-card'>
+            {pastEvents.map((event)=> <div key={event.id} className='group-event-card'><Link to={`/events/${event.id}`}>
               <div className='top'>
                 <img src={event.EventImages.find((image)=> image.preview === true).url || imagePlaceHolder} alt="Event Preview Image" />
-                <div className='group-event-quickdetails'>
-                  <div className="event-start-date">{event.startDate}</div>
-                  <div className="event-title">{event.name}</div>
-                  <div className="event-location">{event.Venue ? event.Venue.city : group.city}, {event.Venue ? event.Venue.state : group.state}</div>
+                <div className='group-event-quick-details'>
+                  <div className="event-start-date">{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</div>
+                  <h4 className="event-title">{event.name}</h4>
+                  <p className="event-location faint">{event.Venue ? event.Venue.city : group.city}, {event.Venue ? event.Venue.state : group.state}</p>
                 </div>
               </div>
-              <p className="group-event-description">{event.description}</p>
-            </div>)}
-          </div> : null }
+            <div className="group-event-description">{event.description}</div>
+            </Link></div>)}</div> :
+          <div><h3>No Upcoming Events</h3></div>}
         </div>
       </div>
     )
-  // } catch {
-  //   return null
-  // }
+  } catch {
+    return null
+  }
 }

@@ -47,7 +47,7 @@ export default function EventDetails(){
     <div className="small-page-container">
       <div>
         <div className='event-title-area'>
-          <span className='small-symbol'>{'< '}</span><Link to="/events">Events</Link>
+        <Link className='breadcrumb' to="/events">{'< '}<span>{`Events`}</span></Link>
           <h2>{event.name}</h2>
           <span className='faint smallest'>Hosted by {event.Group.User.firstName} {event.Group.User.lastName}</span>
         </div>

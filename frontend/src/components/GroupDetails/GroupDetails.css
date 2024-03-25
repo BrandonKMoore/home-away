@@ -1,6 +1,13 @@
+#group-details-page {
+  padding: 50px 50px;
+  gap: 2px;
+  max-width: 1000px;
+}
+
 .group-details-hero {
   display: flex;
-  gap: 20px
+  gap: 20px;
+  width: 100%;
 }
 
 .group-quick-details{
@@ -8,6 +15,7 @@
   flex-direction: column;
   width: 50%;
   justify-content: space-between;
+  padding: 5px 0;
 }
 
 .group-quick-details a {
@@ -28,31 +36,72 @@
   gap: 5px
 }
 
-.group-details-image-container {
-  width: 50%;
-}
-
 .group-details-image-container > img {
   object-fit: cover;
-  width: 100%;
+  width: 500px;
+  height: 300px
 }
 
-
-
-.group-event-card {
-  padding: 2px;
-  width: 50%;
-  background-color: white;
-}
-.group-event-card > .group-event-description {
-  width: 100%
-}
 
 .top {
   display: flex;
-  gap: 10px
+  gap: 10px;
+  width: 100%
 }
 
 .top > img {
-  width: 45%;
+  width: 150px;
+  height: 100px;
+}
+
+.group-details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%
+}
+
+.group-details-body > .header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.group-event-card > a {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 10px;
+  border-radius:1em;
+  width: 35%;
+  background-color: white;
+  gap: 10px;
+}
+
+.event-start-date {
+  color: rgb(82, 0, 0);
+  font-size: .7em;
+}
+
+.group-event-quick-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.group-event-description {
+  width: 100%;
+  font-size: .7em;
+}
+
+.upcomingEvents > h3 {
+  padding: 5px 0
+}
+
+.pastEvents > h3 {
+  padding: 5px 0
+}
+
+.group-organizer-options {
+  display: flex;
+  width: 100%;
 }

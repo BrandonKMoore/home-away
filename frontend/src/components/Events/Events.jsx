@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import GroupEventHeader from "../GroupEventHeader";
 import { getAllEvents } from "../../store/events";
-import placeholder from '/favicon.ico'
+import examplePic from "/example-pic.jpg"
 import './Events.css'
 import { Link } from "react-router-dom";
 
@@ -33,13 +33,19 @@ export default function Events (){
     return `${year}-${month}-${date}`
   }
 
+  function displayDefaultImg(e){
+    console.log(e.target.src)
+    e.target.src=examplePic
+  }
+
   function eventCardGenerator(events){
-    return events.map((event)=> (<>
+    return events.map((event)=> (
+    <div className="eventCard" key={event.id}>
       <div className="line-break"></div>
-      <Link to={`${event.id}`} className="eventCard" key={event.id}>
+      <Link to={`${event.id}`} className="eventCard">
         <div className="topEventCard">
           <div className="eventListImage">
-            <img src={event.previewImage ? event.previewImage : placeholder} alt="" />
+            <img onError={displayDefaultImg} src={event.previewImage ? event.previewImage : examplePic} alt="" />
           </div>
           <div className="eventListDetails">
             <span className="event-startDate">{normalizeDate(event.startDate)} • {normalizeTime(event.startDate)}</span>
@@ -49,7 +55,7 @@ export default function Events (){
         </div>
         <p>{event.description}</p>
       </Link>
-    </>
+    </div>
     ))
   }
 
