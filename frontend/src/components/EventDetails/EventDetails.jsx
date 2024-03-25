@@ -76,14 +76,14 @@ export default function EventDetails(){
             </div>
             <div className='event-cost'>
               <div className='icon faint'>{CiDollar()} </div>
-              <p className='price'>{event.price ? `$${event.price}` : <span className='faint small'>Free</span>}</p>
+              <p className='price'>{Number(event.price) ? `$${event.price}` : <span className='faint small'>Free</span>}</p>
             </div>
             <div className='event-details-bottom-right-hero'>
               <div className='event-attend-type'>
                 <div className='icon faint'>{FaMapPin()}</div>
                 <p className='type faint small'>{} {event.type}</p>
               </div>
-              { sessionUser ?
+              { sessionUser.id === event.Group.User.id ?
                 <div className='auth-manage-buttons'>
                   <Link onClick={handleUpdateButton}>Update</Link>
                   <OpenModalButton buttonText="Delete" modalComponent={<DeleteEventModal event={event}/>} />
