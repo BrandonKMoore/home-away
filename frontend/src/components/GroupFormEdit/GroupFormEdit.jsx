@@ -60,9 +60,9 @@ export default function GroupFormEdit(){
   }, [sessionUser, navigate, group.organizerId])
 
   return (
-    <div className='small-page-container'>
-      <span>Update your Group</span>
-      <h3>We&apos;ll walk you through a few steps to build your local community</h3>
+    <div className='small-page-container create-edit-forms' id='create-edit-forms'>
+      <span className='header-element'>Update your Group</span>
+      <h3 className='header-element'>We&apos;ll walk you through a few steps to build your local community</h3>
       <form onSubmit={handleSubmit}>
         <div className="line-break"></div>
         <h3>First, set your group&apos;s location.</h3>

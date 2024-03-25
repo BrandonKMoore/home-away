@@ -1,13 +1,16 @@
 #group-details-page {
-  padding: 50px 50px;
+  padding: 50px 150px;
   gap: 2px;
   max-width: 1000px;
+
 }
+
 
 .group-details-hero {
   display: flex;
   gap: 20px;
   width: 100%;
+  margin: 0 auto;
 }
 
 .group-quick-details{

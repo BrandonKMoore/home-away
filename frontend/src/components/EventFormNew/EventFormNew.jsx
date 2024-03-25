@@ -62,7 +62,7 @@ export default function EventFormNew() {
   }
 
   return (
-    <div className='small-page-container'>
+    <div className='small-page-container create-edit-forms' id='create-edit-forms'>
       <h2>Create an event for {group.name}</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="event-name-input">What is the name of your event?</label>
